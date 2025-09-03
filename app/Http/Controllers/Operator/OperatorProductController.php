@@ -1,23 +1,46 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Operator;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Supplier;
-class AdminProductController extends Controller
+
+
+class OperatorProductController extends Controller
 {
+    //   public function index() {
+    //     $products = Product::paginate(10);
+    //     return view('backend.operator.products.index', compact('products'));
+    // }
+
+    // public function store(Request $request) {
+    //     Product::create($request->all());
+    //     return redirect()->route('backend.operator.products.index')->with('success','Product added');
+    // }
+
+    // public function update(Request $request, Product $product) {
+    //     $product->update($request->all());
+    //     return redirect()->route('backend.operator.products.index')->with('success','Product updated');
+    // }
+
+    // public function destroy(Product $product) {
+    //     $product->delete();
+    //     return redirect()->route('backend.operator.products.index')->with('success','Product deleted');
+    // }
+    
+
 
     public function index(){
 
         $products = Product::paginate(10);
-        return view ('backend.admin.products.index', compact('products'));
+        return view ('backend.operator.products.index', compact('products'));
     }
     public function create()
     {
         $suppliers = Supplier::all();
-        return view('backend.admin.products.create',compact('suppliers'));
+        return view('backend.operator.products.create',compact('suppliers'));
     }
 
 
@@ -47,7 +70,7 @@ class AdminProductController extends Controller
 
     Product::create($data);
 
-    return redirect()->route('backend.admin.products.index')
+    return redirect()->route('backend.operator.products.index')
                      ->with('success', 'Product created successfully.');
 }
 
@@ -55,7 +78,7 @@ class AdminProductController extends Controller
     public function edit(Product $product)
     {
         $suppliers = Supplier::all();
-        return view('backend.admin.products.edit', compact('product','suppliers'));
+        return view('backend.operator.products.edit', compact('product','suppliers'));
     }
 public function update(Request $request, Product $product)
 {
@@ -84,15 +107,14 @@ public function update(Request $request, Product $product)
 
     $product->update($data);
 
-    return redirect()->route('backend.admin.products.index')
+    return redirect()->route('backend.operator.products.index')
                      ->with('success', 'Product updated successfully.');
 }
 
     public function destroy(Product $product)
     {
         $product->delete();
-        return redirect()->route('backend.admin.products.index')->with('success', 'product deleted successfully.');
+        return redirect()->route('backend.operator.products.index')->with('success', 'product deleted successfully.');
     }
-
 
 }

@@ -64,12 +64,16 @@
     </table>
   </div>
 
-  <!-- Pagination -->
-  <div class="flex justify-end mt-4">
-    <button class="px-3 py-1 border rounded-l">Prev</button>
-    <button class="px-3 py-1 border">1</button>
-    <button class="px-3 py-1 border">2</button>
-    <button class="px-3 py-1 border rounded-r">Next</button>
-  </div>
+ <!-- Pagination -->
+    <div class="mt-4 flex justify-between items-center text-sm text-gray-600">
+        <p>
+            Menampilkan 
+            {{ $products->firstItem() }} - {{ $products->lastItem() }} 
+            dari {{ $products->total() }} produk
+        </p>
+        <div>
+            {{ $products->links('pagination::tailwind') }}
+        </div>
+    </div>
 </div>
 @endsection

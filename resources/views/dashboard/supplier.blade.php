@@ -5,7 +5,7 @@
     <!-- Header -->
     <div class="flex items-center justify-between">
         <h1 class="text-3xl font-bold text-slate-800">Sales Dashboard</h1>
-        <span class="text-gray-500">Hello, {{ Auth::user()->name ?? 'Sales' }} 💼</span>
+        <span class="text-gray-500">Hello, {{ Auth::user()->name ?? 'supplier' }} 💼</span>
     </div>
 
     <!-- Quick Stats -->

@@ -62,7 +62,7 @@
         <div class="bg-white rounded-2xl shadow p-6 hover:shadow-lg transition">
             <h3 class="text-xl font-semibold mb-3">Quick Actions</h3>
             <div class="space-x-3">
-                <a href="{{ route('manager.reports.index') }}"
+                <a href="{{ route('backend.manager.reports.index') }}"
                     class="px-4 py-2 bg-indigo-600 text-white rounded-lg shadow hover:bg-indigo-700">View Reports</a>
                 <a href="{{ url('/transactions') }}"
                     class="px-4 py-2 bg-emerald-600 text-white rounded-lg shadow hover:bg-emerald-700">Check Stock</a>

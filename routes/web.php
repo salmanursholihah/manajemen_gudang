@@ -5,6 +5,9 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Manager\ManagerProductController;
+use App\Http\Controllers\Manager\ManagerTransactionController;
+use App\Http\Controllers\Manager\ManagerSupplierController;
 
 // Landing page (guest)
 Route::get('/', function () {
@@ -80,58 +83,98 @@ Route::prefix('admin')->name('backend.admin.')->middleware(['auth','role:Admin']
         Route::resource('/settings', App\Http\Controllers\Admin\AdminSettingController::class);
     });
 
+Route::prefix('manager')->name('backend.manager.')->middleware(['auth','role:manager'])->group(function () {
+    Route::resource('/customers', App\Http\Controllers\Manager\ManagerCustomerController::class);
+        Route::post('/customers/{customer}/approve', [App\Http\Controllers\Manager\ManagerCustomerController::class, 'approve'])
+        ->name('customers.approve');
 
+    // Products
+    Route::resource('/products', App\Http\Controllers\Manager\ManagerProductController::class);
+    Route::post('/products/{product}/approve', [App\Http\Controllers\Manager\ManagerProductController::class, 'approve'])
+        ->name('products.approve');
 
+    // Reports
+    Route::resource('/reports', App\Http\Controllers\Manager\ManagerReportController::class);
 
+    // Suppliers
+    Route::resource('/suppliers', App\Http\Controllers\Manager\ManagerSupplierController::class);
+    Route::post('/suppliers/{supplier}/approve', [App\Http\Controllers\Manager\ManagerSupplierController::class, 'approve'])
+        ->name('suppliers.approve');
 
-
-
-
-
-
-
-
-
-
-// manager Routes
-Route::prefix('manager')->middleware(['auth', 'role:manager'])->group(function () {
-    Route::view('/customers', 'backend.manager.customers.index')->name('manager.customers.index');
-    Route::view('/products', 'backend.manager.products.index')->name('manager.products.index');
-    Route::view('/reports', 'backend.manager.reports.index')->name('manager.reports.index');
-    Route::view('/suppliers', 'backend.manager.suppliers.index')->name('manager.suppliers.index');
-    Route::view('/transactions', 'backend.manager.transactions.index')->name('manager.transactions.index');
-    Route::view('/users', 'backend.manager.users.index')->name('manager.users.index');
+    // Transactions
+    Route::resource('/transactions', App\Http\Controllers\Manager\ManagerTransactionController::class);
+    Route::post('/transactions/{transaction}/approve', [App\Http\Controllers\Manager\ManagerTransactionController::class, 'approve'])
+        ->name('transactions.approve');
 });
 
-// sales Routes
-Route::prefix('sales')->middleware(['auth', 'role:sales'])->group(function () {
-    Route::view('/customers', 'backend.sales.customers.index')->name('sales.customers.index');
-    Route::view('/products', 'backend.sales.products.index')->name('sales.products.index');
-    Route::view('/reports', 'backend.sales.reports.index')->name('sales.reports.index');
-    Route::view('/suppliers', 'backend.sales.suppliers.index')->name('sales.suppliers.index');
-    Route::view('/transactions', 'backend.sales.transactions.index')->name('sales.transactions.index');
-    Route::view('/users', 'backend.sales.users.index')->name('sales.users.index');
-});
 
-// operator Routes
-Route::prefix('operator')->middleware(['auth', 'role:operator'])->group(function () {
-    Route::view('/customers', 'backend.operator.customers.index')->name('operator.customers.index');
-    Route::view('/products', 'backend.operator.products.index')->name('operator.products.index');
-    Route::view('/reports', 'backend.operator.reports.index')->name('operator.reports.index');
-    Route::view('/suppliers', 'backend.operator.suppliers.index')->name('operator.suppliers.index');
-    Route::view('/transactions', 'backend.operator.transactions.index')->name('operator.transactions.index');
-    Route::view('/users', 'backend.operator.users.index')->name('operator.users.index');
-});
 
-// viewer Routes
-Route::prefix('viewer')->middleware(['auth', 'role:viewer'])->group(function () {
-    Route::view('/customers', 'backend.viewer.customers.index')->name('viewer.customers.index');
-    Route::view('/products', 'backend.viewer.products.index')->name('viewer.products.index');
-    Route::view('/reports', 'backend.viewer.reports.index')->name('viewer.reports.index');
-    Route::view('/suppliers', 'backend.viewer.suppliers.index')->name('viewer.suppliers.index');
-    Route::view('/transactions', 'backend.viewer.transactions.index')->name('viewer.transactions.index');
-    Route::view('/users', 'backend.viewer.users.index')->name('viewer.users.index');
-});
+Route::prefix('operator')->name('backend.operator.')->middleware(['auth','role:operator'])->group(function(){
+        Route::resource('/products', App\Http\Controllers\Operator\OperatorProductController::class);
+        Route::resource('/transactions', App\Http\Controllers\Operator\OperatorTransactionController::class);
+    });
+
+ Route::prefix('supplier')->name('backend.supplier.')->middleware(['auth','role:supplier'])->group(function(){
+        Route::resource('/products', App\Http\Controllers\Supplier\SupplierProductController::class);
+        Route::resource('/transactions', App\Http\Controllers\Supplier\SupplierTransactionController::class);
+    });
+
+ Route::prefix('viewer')->name('backend.viewer.')->middleware(['auth','role:viewer'])->group(function(){
+        Route::resource('/reports', App\Http\Controllers\Viewer\ViewerReportController::class);
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// // manager Routes
+// Route::prefix('manager')->middleware(['auth', 'role:manager'])->group(function () {
+//     Route::view('/customers', 'backend.manager.customers.index')->name('manager.customers.index');
+//     Route::view('/products', 'backend.manager.products.index')->name('manager.products.index');
+//     Route::view('/reports', 'backend.manager.reports.index')->name('manager.reports.index');
+//     Route::view('/suppliers', 'backend.manager.suppliers.index')->name('manager.suppliers.index');
+//     Route::view('/transactions', 'backend.manager.transactions.index')->name('manager.transactions.index');
+//     Route::view('/users', 'backend.manager.users.index')->name('manager.users.index');
+// });
+
+// // sales Routes
+// Route::prefix('sales')->middleware(['auth', 'role:sales'])->group(function () {
+//     Route::view('/customers', 'backend.sales.customers.index')->name('sales.customers.index');
+//     Route::view('/products', 'backend.sales.products.index')->name('sales.products.index');
+//     Route::view('/reports', 'backend.sales.reports.index')->name('sales.reports.index');
+//     Route::view('/suppliers', 'backend.sales.suppliers.index')->name('sales.suppliers.index');
+//     Route::view('/transactions', 'backend.sales.transactions.index')->name('sales.transactions.index');
+//     Route::view('/users', 'backend.sales.users.index')->name('sales.users.index');
+// });
+
+// // operator Routes
+// Route::prefix('operator')->middleware(['auth', 'role:operator'])->group(function () {
+//     Route::view('/customers', 'backend.operator.customers.index')->name('operator.customers.index');
+//     Route::view('/products', 'backend.operator.products.index')->name('operator.products.index');
+//     Route::view('/reports', 'backend.operator.reports.index')->name('operator.reports.index');
+//     Route::view('/suppliers', 'backend.operator.suppliers.index')->name('operator.suppliers.index');
+//     Route::view('/transactions', 'backend.operator.transactions.index')->name('operator.transactions.index');
+//     Route::view('/users', 'backend.operator.users.index')->name('operator.users.index');
+// });
+
+// // viewer Routes
+// Route::prefix('viewer')->middleware(['auth', 'role:viewer'])->group(function () {
+//     Route::view('/customers', 'backend.viewer.customers.index')->name('viewer.customers.index');
+//     Route::view('/products', 'backend.viewer.products.index')->name('viewer.products.index');
+//     Route::view('/reports', 'backend.viewer.reports.index')->name('viewer.reports.index');
+//     Route::view('/suppliers', 'backend.viewer.suppliers.index')->name('viewer.suppliers.index');
+//     Route::view('/transactions', 'backend.viewer.transactions.index')->name('viewer.transactions.index');
+//     Route::view('/users', 'backend.viewer.users.index')->name('viewer.users.index');
+// });
 
 
 

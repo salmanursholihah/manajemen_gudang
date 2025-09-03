@@ -11,14 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('reports', function (Blueprint $table){
-        $table->id();
-        $table->enum('type',['supplier','porchase','stock','customer','suppliers']);
-        $table->date('periode_awal');
-        $table->date('periode_akhir');
-        $table->bigInteger('generate_by');
-        $table->timestamps();
-       });
+        Schema::table('users', function (Blueprint $table) {
+        $table->enum('role',['admin','manager','operator','supplier','viewer']);
+
+        });
     }
 
     /**
@@ -26,6 +22,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::table('user', function (Blueprint $table) {
+            //
+        });
     }
 };

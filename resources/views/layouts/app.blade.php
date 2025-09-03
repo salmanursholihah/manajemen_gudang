@@ -47,23 +47,22 @@
             ['name'=>'setting','route'=> 'backend.admin.settings.index'],
         ],
         'manager' => [
-            ['name'=>'Products', 'route'=>'manager.products.index'],
-            ['name'=>'Transactions', 'route'=>'manager.transactions.index'],
-            ['name'=>'Suppliers', 'route'=>'manager.suppliers.index'],
-            ['name'=>'Customers', 'route'=>'manager.customers.index'],
-            ['name'=>'Reports', 'route'=>'manager.reports.index'],
+            ['name'=>'Products', 'route'=>'backend.manager.products.index'],
+            ['name'=>'Transactions', 'route'=>'backend.manager.transactions.index'],
+            ['name'=>'Suppliers', 'route'=>'backend.manager.suppliers.index'],
+            ['name'=>'Customers', 'route'=>'backend.manager.customers.index'],
+            ['name'=>'Reports', 'route'=>'backend.manager.reports.index'],
         ],
-        'sales' => [
-            ['name'=>'Products', 'route'=>'sales.products.index'],
-            ['name'=>'Transactions', 'route'=>'sales.transactions.index'],
-            ['name'=>'Customers', 'route'=>'sales.customers.index'],
+        'supplier' => [
+            ['name'=>'Products', 'route'=>'backend.supplier.products.index'],
+            ['name'=>'Transactions', 'route'=>'backend.supplier.transactions.index'],
         ],
         'operator' => [
-            ['name'=>'Products', 'route'=>'operator.products.index'],
-            ['name'=>'Transactions', 'route'=>'operator.transactions.index'],
+            ['name'=>'Products', 'route'=>'backend.operator.products.index'],
+            ['name'=>'Transactions', 'route'=>'backend.operator.transactions.index'],
         ],
         'viewer' => [
-            ['name'=>'Reports', 'route'=>'viewer.reports.index'],
+            ['name'=>'Reports', 'route'=>'backend.viewer.reports.index'],
         ],
     ];
 

@@ -61,8 +61,8 @@
         <div class="bg-white rounded-2xl shadow p-6 hover:shadow-lg transition">
             <h3 class="text-xl font-semibold mb-3">Quick Actions</h3>
             <div class="space-x-3">
-                <a href="{{ route('admin.users.index') }}" class="px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700">Manage Users</a>
-                <a href="{{ route('admin.reports.index') }}" class="px-4 py-2 bg-green-600 text-white rounded-lg shadow hover:bg-green-700">View Reports</a>
+                <a href="{{ route('backend.admin.users.index') }}" class="px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700">Manage Users</a>
+                <a href="{{ route('backend.admin.reports.index') }}" class="px-4 py-2 bg-green-600 text-white rounded-lg shadow hover:bg-green-700">View Reports</a>
             </div>
         </div>
     </div>

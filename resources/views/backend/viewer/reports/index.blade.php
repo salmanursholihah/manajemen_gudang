@@ -36,5 +36,16 @@
       </tbody>
     </table>
   </div>
+   <!-- Pagination -->
+    <div class="mt-4 flex justify-between items-center text-sm text-gray-600">
+        <p>
+            Menampilkan 
+            {{ $reports->firstItem() }} - {{ $reports->lastItem() }} 
+            dari {{ $reports->total() }} produk
+        </p>
+        <div>
+            {{ $reports->links('pagination::tailwind') }}
+        </div>
+    </div>
 </div>
 @endsection

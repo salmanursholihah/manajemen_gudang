@@ -11,14 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('reports', function (Blueprint $table){
-        $table->id();
-        $table->enum('type',['supplier','porchase','stock','customer','suppliers']);
-        $table->date('periode_awal');
-        $table->date('periode_akhir');
-        $table->bigInteger('generate_by');
-        $table->timestamps();
-       });
+        Schema::table('products', function (Blueprint $table) {
+            $table->enum('status',['panding','approve','reject'])->default('panding');
+        });
     }
 
     /**
@@ -26,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::table('products', function (Blueprint $table) {
+            //
+        });
     }
 };

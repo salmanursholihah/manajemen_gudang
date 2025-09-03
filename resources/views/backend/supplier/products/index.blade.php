@@ -51,12 +51,6 @@
     </table>
   </div>
 
-  <!-- Pagination -->
-  <div class="flex justify-end mt-4">
-    <button class="px-3 py-1 border rounded-l">Prev</button>
-    <button class="px-3 py-1 border">1</button>
-    <button class="px-3 py-1 border">2</button>
-    <button class="px-3 py-1 border rounded-r">Next</button>
-  </div>
+
 </div>
 @endsection

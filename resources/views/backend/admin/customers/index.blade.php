@@ -37,5 +37,17 @@
             @endforeach
         </tbody>
     </table>
+    
+ <!-- Pagination -->
+    <div class="mt-4 flex justify-between items-center text-sm text-gray-600">
+        <p>
+            Menampilkan 
+            {{ $customers->firstItem() }} - {{ $customers->lastItem() }} 
+            dari {{ $customers->total() }} produk
+        </p>
+        <div>
+            {{ $customers->links('pagination::tailwind') }}
+        </div>
+    </div>
 </div>
 @endsection

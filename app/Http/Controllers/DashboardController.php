@@ -17,8 +17,8 @@ class DashboardController extends Controller
                 return view('dashboard.admin', compact('user'));
             case 'manager':
                 return view('dashboard.manager', compact('user'));
-            case 'sales':
-                return view('dashboard.sales', compact('user'));
+            case 'supplier':
+                return view('dashboard.supplier', compact('user'));
             case 'operator':
                 return view('dashboard.operator', compact('user'));
             default:
