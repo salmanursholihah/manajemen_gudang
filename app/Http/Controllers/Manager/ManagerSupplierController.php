@@ -9,7 +9,7 @@ use App\Models\Supplier;
 class ManagerSupplierController extends Controller
 {
        public function index() {
-        $suppliers = Supplier::paginate(10);
+        $suppliers = Supplier::paginate(5);
         return view('backend.manager.suppliers.index', compact('suppliers'));
     }
 

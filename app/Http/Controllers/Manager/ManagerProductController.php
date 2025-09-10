@@ -10,15 +10,26 @@ use Illuminate\Support\Facades\Storage;
 
 class ManagerProductController extends Controller
 {
-    public function index() {
-        $products = Product::paginate(10);
+    public function index()
+    {
+        $products = Product::paginate(5);
         return view('backend.manager.products.index', compact('products'));
     }
 
-    public function approve(Product $product) {
-        $product->update(['status' => 'approved']);
-        return redirect()->route('backend.manager.products.index')
-                         ->with('success','Product approved');
+    public function approve($id)
+    {
+        $p = Product::findOrFail($id);
+        $p->status = 'approv';
+        $p->save();
+        return back()->with('success','Approved by Manager');
+    }
+
+    public function reject($id)
+    {
+        $p = Product::findOrFail($id);
+        $p->status = 'reject';
+        $p->save();
+        return back()->with('error','Rejected by Manager');
     }
     
     public function edit(Product $product)

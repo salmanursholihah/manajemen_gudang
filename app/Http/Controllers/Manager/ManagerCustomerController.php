@@ -8,7 +8,7 @@ use App\Models\Customer;
 class ManagerCustomerController extends Controller
 {
         public function index() {
-        $customers = Customer::paginate(10);
+        $customers = Customer::paginate(5);
         return view('backend.manager.customers.index', compact('customers'));
     }
 
