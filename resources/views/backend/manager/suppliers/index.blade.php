@@ -7,7 +7,7 @@
 
   <div class="overflow-x-auto bg-white rounded-lg shadow">
     <table class="w-full">
-      <thead class="bg-gray-100">
+      <thead class="bg-gray-200">
         <tr>
           <th class="px-4 py-2">#</th>
           <th class="px-4 py-2">Name</th>
@@ -28,16 +28,7 @@
                 <td class="px-4 py-2 border">{{ $supplier->address }}</td>
                 <td class="px-4 py-2 border">
                     <a href="{{ route('backend.manager.suppliers.edit', $supplier) }}" class="bg-green-500 text-white px-3 py-1 rounded">Edit</a>
-                  @if($supplier->status != 'approved')
-                        <form action="{{ route('backend.manager.suppliers.approve', $supplier->id) }}" 
-                              method="POST" class="inline">
-                            @csrf
-                            <button type="submit" 
-                                    class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm">
-                                    Approve
-                            </button>
-                        </form>
-                        @endif
+          
                 </td>
             </tr>
             @endforeach

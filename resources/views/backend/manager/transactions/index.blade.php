@@ -14,7 +14,7 @@
 
     <div class="overflow-x-auto bg-white rounded-lg shadow">
         <table class="w-full border-collapse">
-            <thead class="bg-gray-100 text-gray-700">
+            <thead class="bg-gray-200">
                 <tr>
                     <th class="px-4 py-2 text-left">#</th>
                     <th class="px-4 py-2 text-left">Invoice</th>
@@ -55,10 +55,6 @@
                         @endif
                     </td>
                     <td class="px-4 py-2 text-center space-x-2">
-                        <a href="{{ route('backend.manager.transactions.edit', $transaction->id) }}"
-                            class="px-3 py-1 bg-green-500 text-white rounded text-sm hover:bg-green-600">
-                            Edit
-                        </a>
                               @if($transaction->status != 'approved')
                         <form action="{{ route('backend.manager.transactions.approve', $transaction->id) }}" 
                               method="POST" class="inline">
@@ -85,6 +81,18 @@
 
     <div class="mt-4">
         {{ $transactions->links() }}
+    </div>
+    
+ <!-- Pagination -->
+    <div class="mt-4 flex justify-between items-center text-sm text-gray-600">
+        <p>
+            Menampilkan 
+            {{ $transactions->firstItem() }} - {{ $transactions->lastItem() }} 
+            dari {{ $transactions->total() }} produk
+        </p>
+        <div>
+            {{ $transactions->links('pagination::tailwind') }}
+        </div>
     </div>
 </div>
 @endsection

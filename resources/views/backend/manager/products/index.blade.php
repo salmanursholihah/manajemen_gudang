@@ -14,7 +14,7 @@
 
     <div class="overflow-x-auto bg-white rounded-lg shadow">
         <table class="w-full text-left border-collapse">
-            <thead class="bg-gray-100 text-gray-700">
+            <thead class="bg-gray-200">
                 <tr>
                     <th class="p-3">#</th>
                     <th class="p-3">Image</th>
@@ -47,7 +47,7 @@
                     <td class="p-3">{{ $product->stock }}</td>
                     <td class="p-3">{{ $product->satuan }}</td>
                     <td class="p-3">
-                        @if($product->status == 'approved')
+                        @if($product->status == 'approv')
                             <span class="px-2 py-1 text-xs rounded bg-green-100 text-green-700">Approved</span>
                         @elseif($product->status == 'rejected')
                             <span class="px-2 py-1 text-xs rounded bg-red-100 text-red-700">Rejected</span>
@@ -62,7 +62,7 @@
                            class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-sm">
                            Edit
                         </a>
-                        @if($product->status != 'approved')
+                        @if($product->status != 'approv')
                         <form action="{{ route('backend.manager.products.approve', $product->id) }}" 
                               method="POST" class="inline">
                             @csrf
@@ -88,3 +88,5 @@
     </div>
 </div>
 @endsection
+
+
