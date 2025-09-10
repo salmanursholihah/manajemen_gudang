@@ -1,12 +1,21 @@
 @extends('layouts.auth')
 
 @section('content')
-<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-100 to-emerald-600">
-    <div class="w-full max-w-md bg-white/95 backdrop-blur-sm rounded-2xl shadow-xl p-8">
-        <h2 class="text-3xl font-bold text-gray-700 text-center">Register</h2>
-        <p class="text-gray-500 text-center mb-6">Buat akun baru Anda</p>
+<div class="min-h-screen flex items-center justify-center bg-white relative overflow-hidden">
 
-        <form method="POST" action="{{ route('register') }}" class="space-y-4">
+    <!-- background lingkaran kanan -->
+    <div class="absolute right-0 top-0 h-full w-1/2 bg-gradient-to-br from-emerald-200 to-emerald-400 
+                rounded-l-[50%]"></div>
+
+    <!-- card utama -->
+    <div class="w-full max-w-5xl bg-white rounded-2xl shadow-2xl flex overflow-hidden relative z-10">
+        
+        <!-- kiri : form -->
+        <div class="flex-1 p-10">
+            <h2 class="text-3xl font-bold text-gray-700 mb-2">Register</h2>
+            <p class="text-gray-500 mb-6">Register ke aplikasi manajemen gudang</p>
+
+          <form method="POST" action="{{ route('register') }}" class="space-y-4">
             @csrf
 
             <div>
@@ -39,10 +48,18 @@
             </button>
         </form>
 
-        <p class="mt-6 text-sm text-center text-gray-600">
-            Sudah punya akun?
-            <a href="{{ route('login') }}" class="text-emerald-600 hover:text-emerald-800 font-medium">Login</a>
-        </p>
+            <p class="mt-6 text-sm text-gray-600">
+                Belum sudah punya akun?
+                <a href="{{ route('login') }}" class="text-emerald-600 hover:text-emerald-800 font-medium">Login</a>
+            </p>
+        </div>
+
+        <!-- kanan : ilustrasi -->
+              <div class="flex-1 flex items-center justify-center p-8 relative z-20">
+            <img src="{{ $loginIllustration = setting('login_illustration') ? asset('storage/' . setting('login_illustration')) : 'https://cdn-icons-png.flaticon.com/512/2920/2920321.png' }}"
+                alt="Login Illustration" class="max-w-[80%] drop-shadow-lg">
+        </div>
+
     </div>
 </div>
 @endsection
