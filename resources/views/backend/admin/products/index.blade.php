@@ -57,6 +57,10 @@
                         <button type="submit" class="bg-red-500 text-white px-3 py-1 rounded"
                                 onclick="return confirm('Are you sure?')">Delete</button>
                     </form>
+                      <form action="{{ route('backend.admin.products.validate',$product->id) }}" method="POST" class="inline">
+                        @csrf 
+                        <button class="bg-purple-500 text-white px-3 py-1 rounded">Validate</button></form>
+
                 </td>
             </tr>
             @endforeach
@@ -77,3 +81,5 @@
     </div>
 </div>
 @endsection
+
+
