@@ -7,25 +7,25 @@
       + Add Transaction</a>
   </div>
 
-  <div class="overflow-x-auto bg-white rounded-lg shadow">
-    <table class="w-full">
-      <thead class="bg-gray-100">
+  <div class="overflow-x-auto rounded-lg shadow">
+  <table class="min-w-full border border-gray-300 text-sm">
+  <thead class="bg-gray-200 text-gray-700">
         <tr>
-          <th class="px-4 py-2">#</th>
-          <th class="px-4 py-2">Invoice</th>
-          <th class="px-4 py-2">Customer</th>
-          <th class="px-4 py-2">Date</th>
-          <th class="px-4 py-2">Total</th>
+          <th class="px-4 py-2 border">#</th>
+          <th class="px-4 py-2 border">Invoice</th>
+          <th class="px-4 py-2 border">Customer</th>
+          <th class="px-4 py-2 border">Date</th>
+          <th class="px-4 py-2 border">Total</th>
         </tr>
       </thead>
     <tbody>
 @foreach($transactions as $key => $transaction)
 <tr class="hover:bg-gray-50">
-    <td class="px-4 py-2">{{ $key + 1 }}</td>
-    <td class="px-4 py-2">{{ $transaction->invoice }}</td>
-    <td class="px-4 py-2">{{ $transaction->customer->name }}</td>
-    <td class="px-4 py-2">{{ $transaction->date->format('Y-m-d') }}</td>
-    <td class="px-4 py-2">{{ number_format($transaction->total,0,'.','.') }}</td>
+    <td class="px-4 py-2 border">{{ $key + 1 }}</td>
+    <td class="px-4 py-2 border">{{ $transaction->invoice }}</td>
+    <td class="px-4 py-2 border">{{ $transaction->customer->name }}</td>
+    <td class="px-4 py-2 border">{{ $transaction->date->format('Y-m-d') }}</td>
+    <td class="px-4 py-2 border">{{ number_format($transaction->total,0,'.','.') }}</td>
 
 </tr>
 @endforeach
@@ -34,5 +34,16 @@
     </table>
   </div>
   
+   <!-- Pagination -->
+    <div class="mt-4 flex justify-between items-center text-sm text-gray-600">
+        <p>
+            Menampilkan 
+            {{ $transactions->firstItem() }} - {{ $transactions->lastItem() }} 
+            dari {{ $transactions->total() }} produk
+        </p>
+        <div>
+            {{ $transactions->links('pagination::tailwind') }}
+        </div>
+    </div>
 </div>
 @endsection
