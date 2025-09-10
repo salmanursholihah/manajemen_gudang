@@ -11,7 +11,7 @@ class AdminSupplierController extends Controller
     // Tampilkan daftar supplier
     public function index()
     {
-        $suppliers = Supplier::paginate(10);
+        $suppliers = Supplier::paginate(5);
         return view('backend.admin.suppliers.index', compact('suppliers'));
     }
 

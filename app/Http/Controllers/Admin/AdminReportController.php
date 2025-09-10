@@ -5,32 +5,55 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Report;
+use Illuminate\Support\Facades\Auth;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class AdminReportController extends Controller
 {
- 
-    // Tampilkan halaman report
-    public function index(Request $request)
+    // Menampilkan daftar report
+    public function index()
     {
-        $query = Report::query();
+        $user = Auth::user();
 
-        // Filter berdasarkan tanggal jika ada input
-        if ($request->filled('start_date') && $request->filled('end_date')) {
-            $query->whereBetween('created_at', [
-                $request->start_date,
-                $request->end_date
-            ]);
-        }
-
-        // Jika klik "All Reports", tampilkan semua
-        if ($request->has('all')) {
-            $reports = Report::all();
-        } else {
-            $reports = $query->latest()->get();
+        // Filter akses berdasarkan role
+        if ($user->role === 'admin') {
+            $reports = Report::latest()->paginate(10);
+        } elseif ($user->role === 'manager') {
+            $reports = Report::whereIn('type', ['sales', 'purchase', 'stock'])->latest()->paginate(10);
+        } elseif ($user->role === 'supplier') {
+            $reports = Report::whereIn('type', ['purchase', 'suppliers'])->latest()->paginate(10);
+        } else { // viewer
+            $reports = Report::latest()->paginate(10);
         }
 
         return view('backend.admin.reports.index', compact('reports'));
     }
 
+    // Generate report baru
+    public function generate(Request $request)
+    {
+        $request->validate([
+            'type' => 'required|in:sales,purchase,stock,customer,suppliers',
+            'periode_awal' => 'required|date',
+            'periode_akhir' => 'required|date|after_or_equal:periode_awal',
+            'amount' => 'required|numeric'
+        ]);
 
+        $report = Report::create([
+            'type' => $request->type,
+            'periode_awal' => $request->periode_awal,
+            'periode_akhir' => $request->periode_akhir,
+            'amount' => $request->amount,
+            'generate_by' => Auth::id(),
+        ]);
+
+        return redirect()->route('backend.admin.reports.index')->with('success', 'Report berhasil dibuat!');
+    }
+
+    // Download report (misalnya PDF)
+public function download(Report $report)
+{
+    $pdf = Pdf::loadView('backend.admin.reports.pdf', compact('report'));
+    return $pdf->download('report-'.$report->id.'.pdf');
+}
 }

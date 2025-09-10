@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Supplier;
+use Illuminate\Support\Facades\Storage;
 class AdminProductController extends Controller
 {
 
@@ -96,3 +97,4 @@ public function update(Request $request, Product $product)
 
 
 }
+
