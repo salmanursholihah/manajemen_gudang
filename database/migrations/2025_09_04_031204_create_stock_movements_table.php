@@ -11,21 +11,21 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('settings', function(Blueprint $table){
+    Schema::create('stock_movements', function (Blueprint $table) {
         $table->id();
-        $table->string('key');
-        $table->text('value');
-        $table->string('type'); // misal: text, image, color, boolean
-        $table->string('group'); // misal: 'general', 'appearance'
+        $table->foreignId('product_id')->constrained()->onDelete('cascade');
+        $table->enum('type', ['inbound','outbound']);
+        $table->integer('quantity');
         $table->timestamps();
-        });
-    }
+    });
+}
+
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('stock_movements');
     }
 };

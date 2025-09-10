@@ -11,13 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('settings', function(Blueprint $table){
-        $table->id();
-        $table->string('key');
-        $table->text('value');
-        $table->string('type'); // misal: text, image, color, boolean
-        $table->string('group'); // misal: 'general', 'appearance'
-        $table->timestamps();
+        Schema::table('transactions', function (Blueprint $table) {
+            $table->enum('status',['approved','rejected','pandding'])->default('pandding');
         });
     }
 
@@ -26,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::table('transactions', function (Blueprint $table) {
+            //
+        });
     }
 };
