@@ -5,7 +5,13 @@
     <!-- Header -->
     <div class="flex items-center justify-between">
         <h1 class="text-3xl font-bold text-slate-800">Viewer Dashboard</h1>
-        <span class="text-gray-500">Welcome, {{ Auth::user()->name ?? 'Viewer' }} 👀</span>
+        <div class="flex items-center space-x-3">
+            <span class="text-gray-500">
+                Welcome back, {{ Auth::user()->name ?? 'Admin' }}
+            </span>
+            <img src="{{ Auth::user()->image ? asset('storage/' . Auth::user()->image) : asset('default-avatar.png') }}"
+                alt="Profile Picture" class="w-20 h-20 rounded-full">
+        </div>
     </div>
 
     <!-- Info Cards -->
@@ -17,7 +23,7 @@
             </div>
             <div>
                 <h2 class="text-lg font-semibold">Total Stock Items</h2>
-                <p class="text-2xl font-bold">12,340</p>
+                <p class="text-2xl font-bold">{{ number_format($totalStockItems,0,'.','.') }}</p>
             </div>
         </div>
 
@@ -28,21 +34,47 @@
             </div>
             <div>
                 <h2 class="text-lg font-semibold">Transactions</h2>
-                <p class="text-2xl font-bold">8,920</p>
+                <p class="text-2xl font-bold">{{ number_format($totalTransactions,0,'.','.') }}</p>
             </div>
         </div>
 
-        <!-- Reports Access -->
+        <!-- Reports -->
         <div class="bg-white rounded-2xl shadow p-6 flex items-center space-x-4 hover:shadow-lg transition">
             <div class="p-3 bg-yellow-100 text-yellow-600 rounded-xl">
                 <i class="fa-solid fa-chart-simple"></i>
             </div>
             <div>
                 <h2 class="text-lg font-semibold">Reports Available</h2>
-                <p class="text-2xl font-bold">24</p>
+                <p class="text-2xl font-bold">{{ $totalReports }}</p>
             </div>
         </div>
     </div>
+
+    <!-- Stock Overview Table -->
+    <div class="bg-white rounded-2xl shadow p-6 overflow-x-auto">
+        <h3 class="text-xl font-semibold mb-4">Stock Overview</h3>
+        <table class="w-full border-collapse">
+            <thead>
+                <tr class="bg-slate-100 text-left">
+                    <th class="p-3 border">Item</th>
+                    <th class="p-3 border">Category</th>
+                    <th class="p-3 border">In Stock</th>
+                    <th class="p-3 border">Last Updated</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($stockOverview as $product)
+                <tr class="border-b hover:bg-gray-50">
+                    <td class="p-3 border">{{ $product->name }}</td>
+                    <td class="p-3 border">{{ $product->category }}</td>
+                    <td class="p-3 border">{{ number_format($product->stock,0,'.','.') }}</td>
+                    <td class="p-3 border">{{ $product->updated_at->format('Y-m-d') }}</td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+
 
     <!-- Stock Overview (Table) -->
     <div class="bg-white rounded-2xl shadow p-6">

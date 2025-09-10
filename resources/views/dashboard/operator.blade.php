@@ -5,30 +5,31 @@
     <!-- Header -->
     <div class="flex items-center justify-between">
         <h1 class="text-3xl font-bold text-slate-800">Operator</h1>
-        <span class="text-gray-500">Hello, {{ Auth::user()->name ?? 'Operator' }} 👷</span>
+        <div class="flex items-center space-x-3">
+            <span class="text-gray-500">
+                Welcome back, {{ Auth::user()->name ?? 'Admin' }}
+            </span>
+            <img src="{{ Auth::user()->image ? asset('storage/' . Auth::user()->image) : asset('default-avatar.png') }}"
+                alt="Profile Picture" class="w-20 h-20 rounded-full">
+        </div>
     </div>
-
     <!-- Quick Stats -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <!-- Inbound -->
         <div class="bg-white rounded-2xl shadow p-6 flex items-center space-x-4 hover:shadow-lg transition">
-            <div class="p-3 bg-blue-100 text-blue-600 rounded-xl">
-                📥
-            </div>
+            <div class="p-3 bg-blue-100 text-blue-600 rounded-xl">📥</div>
             <div>
                 <h2 class="text-lg font-semibold">Inbound Today</h2>
-                <p class="text-2xl font-bold">128</p>
+                <p class="text-2xl font-bold">{{ $inboundToday }}</p>
             </div>
         </div>
 
         <!-- Outbound -->
         <div class="bg-white rounded-2xl shadow p-6 flex items-center space-x-4 hover:shadow-lg transition">
-            <div class="p-3 bg-red-100 text-red-600 rounded-xl">
-                📤
-            </div>
+            <div class="p-3 bg-red-100 text-red-600 rounded-xl">📤</div>
             <div>
                 <h2 class="text-lg font-semibold">Outbound Today</h2>
-                <p class="text-2xl font-bold">96</p>
+                <p class="text-2xl font-bold">{{ $outboundToday }}</p>
             </div>
         </div>
 
@@ -36,14 +37,14 @@
         <div class="bg-white rounded-2xl shadow p-6 flex items-center space-x-4 hover:shadow-lg transition">
             <div class="p-3 bg-green-100 text-green-600 rounded-xl">
                 <i class="fa-solid fa-box-archive"></i>
-
             </div>
             <div>
                 <h2 class="text-lg font-semibold">Current Stock</h2>
-                <p class="text-2xl font-bold">12,450</p>
+                <p class="text-2xl font-bold">{{ $currentStock }}</p>
             </div>
         </div>
     </div>
+
 
     <!-- Operator Actions -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">

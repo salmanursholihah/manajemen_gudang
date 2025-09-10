@@ -4,11 +4,16 @@
 <div class="space-y-6">
     <!-- Header -->
     <div class="flex items-center justify-between">
-        <h1 class="text-3xl font-bold text-slate-800">Sales Dashboard</h1>
-        <span class="text-gray-500">Hello, {{ Auth::user()->name ?? 'supplier' }} 💼</span>
+        <h1 class="text-3xl font-bold text-slate-800">Supplier Dashboard</h1>
+        <div class="flex items-center space-x-3">
+            <span class="text-gray-500">
+                Welcome back, {{ Auth::user()->name ?? 'Admin' }}
+            </span>
+            <img src="{{ Auth::user()->image ? asset('storage/' . Auth::user()->image) : asset('default-avatar.png') }}"
+                alt="Profile Picture" class="w-20 h-20 rounded-full">
+        </div>
     </div>
 
-    <!-- Quick Stats -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <!-- Total Sales -->
         <div class="bg-white rounded-2xl shadow p-6 flex items-center space-x-4 hover:shadow-lg transition">
@@ -17,7 +22,7 @@
             </div>
             <div>
                 <h2 class="text-lg font-semibold">Total Sales</h2>
-                <p class="text-2xl font-bold">Rp 125M</p>
+                <p class="text-2xl font-bold">Rp {{ number_format($totalSales,0,'.','.') }}</p>
             </div>
         </div>
 
@@ -28,7 +33,7 @@
             </div>
             <div>
                 <h2 class="text-lg font-semibold">Customers</h2>
-                <p class="text-2xl font-bold">3,240</p>
+                <p class="text-2xl font-bold">{{ $customerCount }}</p>
             </div>
         </div>
 
@@ -39,27 +44,32 @@
             </div>
             <div>
                 <h2 class="text-lg font-semibold">Pending Orders</h2>
-                <p class="text-2xl font-bold">87</p>
+                <p class="text-2xl font-bold">{{ $pendingOrders }}</p>
             </div>
         </div>
     </div>
 
+
     <!-- Sales Actions -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <!-- Manage Transactions -->
-        <div class="bg-white rounded-2xl shadow p-6 hover:shadow-lg transition flex flex-col items-center justify-center">
+        <div
+            class="bg-white rounded-2xl shadow p-6 hover:shadow-lg transition flex flex-col items-center justify-center">
             <div class="text-5xl mb-4">🧾</div>
             <h3 class="text-xl font-semibold mb-2">Transactions</h3>
             <p class="text-gray-600 mb-4">Manage and review sales transactions.</p>
-            <a href="{{ url('/transactions') }}" class="px-4 py-2 bg-green-600 text-white rounded-lg shadow hover:bg-green-700">Go to Transactions</a>
+            <a href="{{ url('/transactions') }}"
+                class="px-4 py-2 bg-green-600 text-white rounded-lg shadow hover:bg-green-700">Go to Transactions</a>
         </div>
 
         <!-- Manage Customers -->
-        <div class="bg-white rounded-2xl shadow p-6 hover:shadow-lg transition flex flex-col items-center justify-center">
+        <div
+            class="bg-white rounded-2xl shadow p-6 hover:shadow-lg transition flex flex-col items-center justify-center">
             <div class="text-5xl mb-4">👤</div>
             <h3 class="text-xl font-semibold mb-2">Customers</h3>
             <p class="text-gray-600 mb-4">Track and manage customer data.</p>
-            <a href="{{ url('/customers') }}" class="px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700">Go to Customers</a>
+            <a href="{{ url('/customers') }}"
+                class="px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700">Go to Customers</a>
         </div>
     </div>
 
