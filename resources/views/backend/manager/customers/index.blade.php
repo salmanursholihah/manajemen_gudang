@@ -10,12 +10,12 @@
     <table class="w-full">
       <thead class="bg-gray-200">
         <tr>
-          <th class="px-4 py-2">#</th>
-          <th class="px-4 py-2">Name</th>
-          <th class="px-4 py-2">Email</th>
-          <th class="px-4 py-2">Phone</th>
-          <th class="px-4 py-2">Address</th>
-          <th class="px-4 py-2 text-center">Actions</th>
+          <th class="px-4 py-2 border">#</th>
+          <th class="px-4 py-2 border">Name</th>
+          <th class="px-4 py-2 border">Email</th>
+          <th class="px-4 py-2 border">Phone</th>
+          <th class="px-4 py-2 border">Address</th>
+          <th class="px-4 py-2 berder">Actions</th>
         </tr>
       </thead>
       <tbody>

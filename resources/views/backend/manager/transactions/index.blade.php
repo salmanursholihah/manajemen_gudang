@@ -16,34 +16,34 @@
         <table class="w-full border-collapse">
             <thead class="bg-gray-200">
                 <tr>
-                    <th class="px-4 py-2 text-left">#</th>
-                    <th class="px-4 py-2 text-left">Invoice</th>
-                    <th class="px-4 py-2 text-left">Customer</th>
-                    <th class="px-4 py-2 text-left">Date</th>
-                    <th class="px-4 py-2 text-left">Type</th>
-                    <th class="px-4 py-2 text-left">Total</th>
-                    <th class="px-4 py-2 text-left">status</th>
-                    <th class="px-4 py-2 text-center">Actions</th>
+                    <th class="px-4 py-2 border">#</th>
+                    <th class="px-4 py-2 border">Invoice</th>
+                    <th class="px-4 py-2 border">Customer</th>
+                    <th class="px-4 py-2 border">Date</th>
+                    <th class="px-4 py-2 border">Type</th>
+                    <th class="px-4 py-2 border">Total</th>
+                    <th class="px-4 py-2 border">status</th>
+                    <th class="px-4 py-2 border">Actions</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse($transactions as $transaction)
                 <tr class="hover:bg-gray-50 border-t">
-                    <td class="px-4 py-2">{{ $loop->iteration }}</td>
-                    <td class="px-4 py-2">{{ $transaction->invoice }}</td>
-                    <td class="px-4 py-2">
+                    <td class="px-4 py-2 border">{{ $loop->iteration }}</td>
+                    <td class="px-4 py-2 border">{{ $transaction->invoice }}</td>
+                    <td class="px-4 py-2 border">
                         {{-- jika sudah ada relasi ke Customer model --}}
                         {{ $transaction->customer->name ?? $transaction->customer_id }}
                     </td>
-                    <td class="px-4 py-2">{{ $transaction->date }}</td>
-                    <td class="px-4 py-2">
+                    <td class="px-4 py-2 border">{{ $transaction->date }}</td>
+                    <td class="px-4 py-2 border">
                         <span
                             class="px-2 py-1 text-xs rounded 
                 {{ $transaction->type === 'pembelian' ? 'bg-blue-100 text-blue-700' : 'bg-purple-100 text-purple-700' }}">
                             {{ ucfirst($transaction->type) }}
                         </span>
                     </td>
-                    <td class="px-4 py-2">{{ number_format($transaction->total, 0, ',', '.') }}</td>
+                    <td class="px-4 py-2 border">{{ number_format($transaction->total, 0, ',', '.') }}</td>
 
                     <td class="p-3">
                         @if($transaction->status == 'approved')

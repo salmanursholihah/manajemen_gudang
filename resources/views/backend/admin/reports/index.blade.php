@@ -54,7 +54,7 @@
 
     <!-- Reports Table -->
     <div class="overflow-x-auto bg-white rounded shadow-sm">
-        <table class="min-w-full border-collapse border border-gray-200">
+        <table class="w-full border border-gray-300 rounded-lg">
             <thead class="bg-gray-100">
                 <tr>
                     <th class="border px-3 py-2">ID</th>
@@ -74,11 +74,11 @@
                     <td class="border px-3 py-2">{{ $report->amount }}</td>
                     <td class="border px-3 py-2">{{ $report->generate_by }}</td>
                     <td class="border px-3 py-2 space-x-2">
-                        <a href="{{ route('backend.admin.reports.download', $report->id) }}" class="text-blue-600 hover:underline">Download</a>
+                        <a href="{{ route('backend.admin.reports.download', $report->id) }}" class="bg-green-500 text-white px-3 py-1 rounded block md:inline-block text-center">Download</a>
                         <form action="{{ route('backend.admin.reports.destroy', $report->id) }}" method="POST" class="inline">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="text-red-600 hover:underline" onclick="return confirm('Yakin ingin menghapus report ini?')">Delete</button>
+                            <button type="submit" class="bg-red-500 text-white px-3 py-1 rounded block md:inline-block w-full md:w-auto" onclick="return confirm('Yakin ingin menghapus report ini?')">Delete</button>
                         </form>
                     </td>
                 </tr>

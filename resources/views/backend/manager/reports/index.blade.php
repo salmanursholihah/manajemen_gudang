@@ -6,9 +6,9 @@
 
     <!-- Alert Success -->
     @if(session('success'))
-        <div class="bg-green-100 text-green-800 p-2 mb-4 rounded">
-            {{ session('success') }}
-        </div>
+    <div class="bg-green-100 text-green-800 p-2 mb-4 rounded">
+        {{ session('success') }}
+    </div>
     @endif
 
     <!-- Generate Report Form -->
@@ -48,7 +48,8 @@
                 @error('amount') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
             </div>
 
-            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Generate Report</button>
+            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Generate
+                Report</button>
         </form>
     </div>
 
@@ -59,11 +60,11 @@
                 <label>Type</label>
                 <select name="type" class="border p-2 rounded">
                     <option value="all">All</option>
-                    <option value="sales" @if(request('type')=='sales') selected @endif>Sales</option>
-                    <option value="purchase" @if(request('type')=='purchase') selected @endif>Purchase</option>
-                    <option value="stock" @if(request('type')=='stock') selected @endif>Stock</option>
-                    <option value="customer" @if(request('type')=='customer') selected @endif>Customer</option>
-                    <option value="suppliers" @if(request('type')=='suppliers') selected @endif>Suppliers</option>
+                    <option value="sales" @if(request('type')=='sales' ) selected @endif>Sales</option>
+                    <option value="purchase" @if(request('type')=='purchase' ) selected @endif>Purchase</option>
+                    <option value="stock" @if(request('type')=='stock' ) selected @endif>Stock</option>
+                    <option value="customer" @if(request('type')=='customer' ) selected @endif>Customer</option>
+                    <option value="suppliers" @if(request('type')=='suppliers' ) selected @endif>Suppliers</option>
                 </select>
             </div>
             <div>
@@ -100,7 +101,8 @@
                     <td class="border px-3 py-2">{{ $report->amount }}</td>
                     <td class="border px-3 py-2">{{ $report->generate_by }}</td>
                     <td class="border px-3 py-2">
-                        <a href="{{ route('backend.manager.reports.download', $report->id) }}" class="text-blue-600 hover:underline">Download</a>
+                        <a href="{{ route('backend.manager.reports.download', $report->id) }}"
+                            class="bg-blue-500 text-white px-3 py-1 rounded block md:inline-block w-full md:w-auto">Download</a>
                     </td>
                 </tr>
                 @empty

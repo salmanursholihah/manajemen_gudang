@@ -38,11 +38,11 @@
                     <td class="px-4 py-2 border">{{ $setting->type }}</td>
                     <td class="px-4 py-2 border">{{ $setting->group }}</td>
                     <td class="px-4 py-2 border">
-                        <a href="{{ route('backend.admin.settings.edit', $setting) }}" class="text-blue-600 hover:underline">Edit</a>
+                        <a href="{{ route('backend.admin.settings.edit', $setting) }}"                      class="bg-yellow-500 text-white px-3 py-1 rounded block md:inline-block w-full md:w-auto">Edit</a>
                         <form action="{{ route('backend.admin.settings.destroy', $setting) }}" method="POST" class="inline">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="text-red-600 hover:underline" onclick="return confirm('Delete?')">Delete</button>
+                            <button type="submit" class="bg-red-500 text-white px-3 py-1 rounded block md:inline-block w-full md:w-auto" onclick="return confirm('Delete?')">Delete</button>
                         </form>
                     </td>
                 </tr>
