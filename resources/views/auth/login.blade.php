@@ -41,6 +41,10 @@
                 <a href="{{ route('register') }}"
                     class="text-emerald-600 hover:text-emerald-800 font-medium">Register</a>
             </p>
+            <p class="mt-2 text-sm text-gray-600">
+                Lupa password?
+                <a href="{{ route('password.request') }}"
+                    class="text-emerald-600 hover:text-emerald-800 font-medium">Reset Password</a>
         </div>
 
         <!-- kanan : ilustrasi -->

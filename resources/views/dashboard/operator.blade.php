@@ -54,7 +54,7 @@
             <div class="text-5xl mb-4">📷</div>
             <h3 class="text-xl font-semibold mb-2">Scan QR</h3>
             <p class="text-gray-600 mb-4">Quickly scan items for inbound & outbound.</p>
-            <a href="{{ url('/scan') }}"
+            <a href="{{ Route('backend.operator.scan') }}"
                 class="px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700">Start Scanning</a>
         </div>
 
@@ -62,10 +62,10 @@
         <div class="bg-white rounded-2xl shadow p-6 hover:shadow-lg transition">
             <h3 class="text-xl font-semibold mb-3">Stock Operations</h3>
             <div class="space-y-3">
-                <a href="{{ url('/inbound') }}"
+                <a href="#"
                     class="block px-4 py-3 bg-green-600 text-white rounded-lg shadow hover:bg-green-700">➕ Add Inbound
                     Stock</a>
-                <a href="{{ url('/outbound') }}"
+                <a href="#"
                     class="block px-4 py-3 bg-red-600 text-white rounded-lg shadow hover:bg-red-700">➖ Process Outbound
                     Stock</a>
             </div>

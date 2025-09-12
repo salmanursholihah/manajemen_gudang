@@ -51,11 +51,11 @@ class DashboardController extends Controller
     $today = now()->toDateString();
     $inboundToday = StockMovement::where('type', 'inbound')
         ->whereDate('created_at', $today)
-        ->sum('quantity'); // jumlah barang masuk
+        ->sum('stock'); // jumlah barang masuk
 
     $outboundToday = StockMovement::where('type', 'outbound')
         ->whereDate('created_at', $today)
-        ->sum('quantity'); // jumlah barang keluar
+        ->sum('stock'); // jumlah barang keluar
 
     // Total stock saat ini
     $currentStock = Product::sum('stock'); // misal kolom 'stock' di tabel products

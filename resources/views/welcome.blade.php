@@ -98,18 +98,18 @@
             <div class="grid md:grid-cols-2 gap-6">
                 <div class="p-6 rounded-2xl border shadow-sm bg-emerald-50">
                     <h3 class="font-semibold mb-2">Manajemen Stok</h3>
-                    <p class="text-slate-700 text-sm">* Pencatatan stok masuk, keluar, dan retur.<br>* Pelacakan posisi
-                        barang.<br>* Peringatan stok minimum.<br>* Multi-gudang.<br>* Laporan mutasi stok.</p>
+                    <p class="text-slate-700 text-sm">* Pencatatan stok masuk, keluar.<br>* Pelacakan posisi
+                        barang.<br>* Peringatan stok minimum.<br>* Laporan mutasi stok.</p>
                 </div>
                 <div class="p-6 rounded-2xl border shadow-sm bg-emerald-50">
                     <h3 class="font-semibold mb-2">Inbound / Receiving</h3>
                     <p class="text-slate-700 text-sm">* Penerimaan barang dari supplier.<br>* Verifikasi barang sesuai
-                        PO.<br>* Pencatatan kondisi barang saat diterima.<br>* Barcode / QR code scanning.</p>
+                        PO.<br>* Barcode / QR code scanning.</p>
                 </div>
                 <div class="p-6 rounded-2xl border shadow-sm bg-emerald-50">
                     <h3 class="font-semibold mb-2">Manajemen Transaksi</h3>
                     <p class="text-slate-700 text-sm">* Pengepakan barang sesuai pesanan.<br>* Labeling
-                        barcode/QR/RFID.<br>* Integrasi ekspedisi/logistik.<br>* Laporan pengiriman & tracking.</p>
+                        <br>* Integrasi ekspedisi/logistik.<br>* Laporan pengiriman & tracking.</p>
                 </div>
                 <div class="p-6 rounded-2xl border shadow-sm bg-emerald-50">
                     <h3 class="font-semibold mb-2">Pelacakan & Audit Trail</h3>

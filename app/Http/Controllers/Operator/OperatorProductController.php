@@ -20,7 +20,8 @@ class OperatorProductController extends Controller
     // Form tambah produk baru
     public function create()
     {
-        return view('backend.operator.products.create');
+        $products = Product::paginate(10);
+        return view('backend.operator.products.create', compact('products'));
     }
 
     // Simpan produk baru
@@ -108,3 +109,16 @@ class OperatorProductController extends Controller
                          ->with('success', 'Product deleted successfully.');
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -11,7 +11,14 @@ use App\Http\Controllers\Manager\ManagerSupplierController;
 use App\Http\Controllers\Admin\AdminReportController;
 use App\Http\Controllers\Manager\ManagerReportController;
 use App\Http\Controllers\Operator\OperatorReportController;
+use App\Http\Controllers\Operator\OperatorTransactionController;
 use App\Http\Controllers\Supplier\SupplierReportController;
+use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\Auth\AdminResetPasswordController;
+use App\Http\Controllers\Operator\OperatorInboundController;
+use App\Http\Controllers\Operator\OperatorOutboundController;  
 
 // Landing page (guest)
 Route::get('/', function () {
@@ -26,6 +33,14 @@ Route::middleware('guest')->group(function () {
     Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
     Route::post('/register', [AuthController::class, 'register']);
 });
+
+
+Route::get('forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
+Route::post('forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+
+
+Route::get('reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
+Route::post('reset-password', [ResetPasswordController::class, 'reset'])->name('password.update');
 
 // Logout hanya untuk user login
 Route::post('/logout', [AuthController::class, 'logout'])
@@ -86,6 +101,11 @@ Route::prefix('admin')->name('backend.admin.')->middleware(['auth','role:Admin']
     Route::resource('/settings', App\Http\Controllers\Admin\AdminSettingController::class);
 
     Route::resource('/landings', App\Http\Controllers\Admin\AdminLandingController::class);
+
+    Route::post('/admin/generate-reset-link/{email}', [AdminResetPasswordController::class, 'generate'])
+        ->name('generateResetLink');
+
+
 });
 
 // Route::prefix('admin')->name('backend.admin.')->middleware(['auth','role:Admin'])->group(function(){
@@ -170,20 +190,35 @@ Route::prefix('supplier')->name('backend.supplier.')->middleware(['auth','role:S
 
 // ================== OPERATOR ==================
 Route::prefix('operator')->name('backend.operator.')->middleware(['auth','role:Operator'])->group(function () {
-    Route::resource('/products', App\Http\Controllers\Operator\OperatorProductController::class);
-    Route::resource('/transactions', App\Http\Controllers\Operator\OperatorTransactionController::class);
-    Route::resource('/reports', App\Http\Controllers\Operator\OperatorReportController::class);
-    // Generate report baru
-    Route::post('/reports/generate', [OperatorReportController::class, 'generate'])->name('reports.generate');
-    // Download report
-    Route::get('/reports/download/{report}', [OperatorReportController::class, 'download'])->name('reports.download');
 
+    // Product CRUD
+    Route::resource('/products', App\Http\Controllers\Operator\OperatorProductController::class);
+
+    // Transactions CRUD
+    Route::resource('/transactions', App\Http\Controllers\Operator\OperatorTransactionController::class);
+
+    // Inbound
+    Route::get('/transactions/inbound/create', [App\Http\Controllers\Operator\OperatorTransactionController::class, 'createInbound'])
+        ->name('transactions.inbound.create');
+    Route::post('/transactions/inbound/store', [App\Http\Controllers\Operator\OperatorTransactionController::class, 'storeInbound'])
+        ->name('transactions.inbound.store');
+
+    // Outbound
+    Route::get('/transactions/outbound/create', [App\Http\Controllers\Operator\OperatorTransactionController::class, 'createOutbound'])
+        ->name('transactions.outbound.create');
+    Route::post('/transactions/outbound/store', [App\Http\Controllers\Operator\OperatorTransactionController::class, 'storeOutbound'])
+        ->name('transactions.outbound.store');
+
+    // Reports
+    Route::resource('/reports', App\Http\Controllers\Operator\OperatorReportController::class);
+    Route::post('/reports/generate', [App\Http\Controllers\Operator\OperatorReportController::class, 'generate'])->name('reports.generate');
+    Route::get('/reports/download/{report}', [App\Http\Controllers\Operator\OperatorReportController::class, 'download'])->name('reports.download');
+
+    // Scan
+    Route::get('/scan', [App\Http\Controllers\Operator\ScanController::class, 'index'])->name('scan');
+    Route::post('/scan', [App\Http\Controllers\Operator\ScanController::class, 'process'])->name('scan.process');
 });
 
-// Route::prefix('operator')->name('backend.operator.')->middleware(['auth','role:operator'])->group(function(){
-//         Route::resource('/products', App\Http\Controllers\Operator\OperatorProductController::class);
-//         Route::resource('/transactions', App\Http\Controllers\Operator\OperatorTransactionController::class);
-//     });
 
 
 

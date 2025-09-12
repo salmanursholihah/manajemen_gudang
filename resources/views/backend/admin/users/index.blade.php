@@ -7,57 +7,71 @@
             class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">+ Add User</a>
     </div>
 
-<div class="overflow-x-auto bg-white rounded-lg shadow">
-    <table class="w-full">
-        <thead class="bg-gray-100">
-            <tr>
-                <th class="px-4 py-2 border">#</th>
-                <th class="px-4 py-2 border">Name</th>
-                <th class="px-4 py-2 border">Email</th>
-                <th class="px-4 py-2 border">Role</th>
-                <th class="px-4 py-2 border">Status</th>
-                <th class="px-4 py-2 text-center border">Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        @foreach ($users as $user)
-        <tr>
-            <td class="px-4 py-2 border">{{ $loop->iteration }}</td>
-            <td class="px-4 py-2 border">{{ $user->name }}</td>
-            <td class="px-4 py-2 border">{{ $user->email }}</td>
-            <td class="px-4 py-2 border">{{ $user->role }}</td>
-            <td class="px-4 py-2 border">
-                <form action="{{ route('backend.admin.users.updateStatus', $user->id) }}" method="POST">
-                    @csrf
-                    @method('PATCH')
-                    <button type="submit"
-                        class="px-2 py-1 rounded {{ $user->status === 'Aktif' ? 'bg-green-500 text-white hover:bg-green-600' : 'bg-yellow-500 text-white hover:bg-yellow-600' }} transition-colors duration-200">
-                        {{ $user->status }}
-                    </button>
-                </form>
-            </td>
-            <td class="px-4 py-2 border text-center space-x-2">
-                <a href="{{ route('backend.admin.users.edit', $user) }}"
-                    class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600">Edit</a>
-                <form action="{{ route('backend.admin.users.destroy', $user) }}" method="POST" class="inline">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit"
-                        class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
-                        onclick="return confirm('Are you sure?')">Delete</button>
-                </form>
-            </td>
-        </tr>
-        @endforeach
-        </tbody>
-    </table>
-</div>
+    @if(session('reset_link'))
+    <div class="p-4 mb-4 bg-green-100 text-green-700 rounded">
+        Reset Link: 
+        <a href="{{ session('reset_link') }}" target="_blank" class="text-blue-600 underline">
+            {{ session('reset_link') }}
+        </a>
+    </div>
+@endif
 
- <!-- Pagination -->
+    <div class="overflow-x-auto bg-white rounded-lg shadow">
+        <table class="w-full">
+            <thead class="bg-gray-100">
+                <tr>
+                    <th class="px-4 py-2 border">#</th>
+                    <th class="px-4 py-2 border">Name</th>
+                    <th class="px-4 py-2 border">Email</th>
+                    <th class="px-4 py-2 border">Role</th>
+                    <th class="px-4 py-2 border">Status</th>
+                    <th class="px-4 py-2 text-center border">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($users as $user)
+                <tr>
+                    <td class="px-4 py-2 border">{{ $loop->iteration }}</td>
+                    <td class="px-4 py-2 border">{{ $user->name }}</td>
+                    <td class="px-4 py-2 border">{{ $user->email }}</td>
+                    <td class="px-4 py-2 border">{{ $user->role }}</td>
+                    <td class="px-4 py-2 border">
+                        <form action="{{ route('backend.admin.users.updateStatus', $user->id) }}" method="POST">
+                            @csrf
+                            @method('PATCH')
+                            <button type="submit"
+                                class="px-2 py-1 rounded {{ $user->status === 'Aktif' ? 'bg-green-500 text-white hover:bg-green-600' : 'bg-yellow-500 text-white hover:bg-yellow-600' }} transition-colors duration-200">
+                                {{ $user->status }}
+                            </button>
+                        </form>
+                    </td>
+                    <td class="px-4 py-2 border text-center space-x-2">
+                        <a href="{{ route('backend.admin.users.edit', $user) }}"
+                            class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600">Edit</a>
+                        <form action="{{ route('backend.admin.users.destroy', $user) }}" method="POST" class="inline">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+                                onclick="return confirm('Are you sure?')">Delete</button>
+                        </form>
+                    
+                        <form action="{{ route('backend.admin.generateResetLink', $user->email) }}" method="POST">
+                            @csrf
+                            <button type="submit" class="px-3 py-1 bg-blue-600 text-white rounded">
+                                Generate Reset Link
+                            </button>
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Pagination -->
     <div class="mt-4 flex justify-between items-center text-sm text-gray-600">
         <p>
-            Menampilkan 
-            {{ $users->firstItem() }} - {{ $users->lastItem() }} 
+            Menampilkan
+            {{ $users->firstItem() }} - {{ $users->lastItem() }}
             dari {{ $users->total() }} produk
         </p>
         <div>

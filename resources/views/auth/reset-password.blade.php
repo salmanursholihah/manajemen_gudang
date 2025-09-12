@@ -1,39 +1,44 @@
-<x-guest-layout>
-    <form method="POST" action="{{ route('password.store') }}">
+@extends('layouts.auth')
+
+@section('content')
+<div class="min-h-screen flex items-center justify-center bg-white relative overflow-hidden">
+
+    <!-- background lingkaran kanan -->
+    <div class="absolute right-0 top-0 h-full w-1/2 bg-gradient-to-br from-emerald-200 to-emerald-400 
+                rounded-l-[50%]"></div>
+
+    <!-- card utama -->
+    <div class="w-full max-w-5xl bg-white rounded-2xl shadow-2xl flex overflow-hidden relative z-10">
+
+        <!-- kiri : form -->
+        <div class="flex-1 p-10">
+            <h2 class="text-3xl font-bold text-gray-700 mb-2">Reset Password</h2>
+
+        
+    <form method="POST" action="{{ route('password.update') }}">
         @csrf
+        <input type="hidden" name="token" value="{{ $token }}">
 
-        <!-- Password Reset Token -->
-        <input type="hidden" name="token" value="{{ $request->route('token') }}">
+        <label>Email</label>
+        <input type="email" name="email" class="w-full border p-2 rounded mb-4" required>
 
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email', $request->email)" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
+        <label>Password Baru</label>
+        <input type="password" name="password" class="w-full border p-2 rounded mb-4" required>
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-            <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
+        <label>Konfirmasi Password</label>
+        <input type="password" name="password_confirmation" class="w-full border p-2 rounded mb-4" required>
 
-        <!-- Confirm Password -->
-        <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
-
-            <x-text-input id="password_confirmation" class="block mt-1 w-full"
-                                type="password"
-                                name="password_confirmation" required autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
-        </div>
-
-        <div class="flex items-center justify-end mt-4">
-            <x-primary-button>
-                {{ __('Reset Password') }}
-            </x-primary-button>
-        </div>
+        <button class="w-full bg-green-600 text-white py-2 rounded">Reset Password</button>
     </form>
-</x-guest-layout>
+
+        
+        </div>
+
+        <!-- kanan : ilustrasi -->
+        <div class="flex-1 flex items-center justify-center p-8 relative z-20">
+            <img src="{{ $loginIllustration = setting('login_illustration') ? asset('storage/' . setting('login_illustration')) : 'https://cdn-icons-png.flaticon.com/512/2920/2920321.png' }}"
+                alt="Login Illustration" class="max-w-[80%] drop-shadow-lg">
+        </div>
+    </div>
+</div>
+@endsection

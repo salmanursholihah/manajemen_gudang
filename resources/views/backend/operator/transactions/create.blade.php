@@ -1,39 +1,76 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container mx-auto p-6">
-    <h1 class="text-2xl font-bold mb-4">Add Transaction</h1>
+<div class="p-6 max-w-4xl mx-auto">
+    <h1 class="text-2xl font-bold mb-4">Buat Transaksi</h1>
 
-    <form action="{{ route('backend.operator.transactions.store') }}" method="POST" class="space-y-4">
-        @csrf
+<form action="{{ route('backend.operator.transactions.store') }}" method="POST">
+    @csrf
 
-        <!-- Invoice -->
-        <input type="text" name="invoice" value="{{ old('invoice') }}" placeholder="Invoice" 
-               class="w-full border p-2" required>
-        @error('invoice') <p class="text-red-500">{{ $message }}</p> @enderror
+    <div class="mb-3">
+        <label>Invoice</label>
+        <input type="text" name="invoice" class="border rounded px-2 py-1 w-full" required>
+    </div>
 
-        <!-- Customer -->
-        <select name="customer_id" class="w-full border p-2" required>
-            <option value="">-- Select Customer --</option>
-            @foreach($customers as $customer)
-                <option value="{{ $customer->id }}" {{ old('customer_id') == $customer->id ? 'selected' : '' }}>
-                    {{ $customer->name }}
-                </option>
+    <div class="mb-3">
+        <label>Type</label>
+        <select name="type" class="border rounded px-2 py-1 w-full" required>
+            <option value="pembelian">Inbound (Pembelian)</option>
+            <option value="pembayaran">Outbound (Pembayaran)</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label>Customer</label>
+        <select name="customer_id" class="border rounded px-2 py-1 w-full">
+            <option value="">-- Pilih Customer --</option>
+            @foreach($customers as $c)
+                <option value="{{ $c->id }}">{{ $c->name }}</option>
             @endforeach
         </select>
-        @error('customer_id') <p class="text-red-500">{{ $message }}</p> @enderror
+    </div>
 
-        <!-- Date -->
-        <input type="date" name="date" value="{{ old('date') }}" class="w-full border p-2" required>
-        @error('date') <p class="text-red-500">{{ $message }}</p> @enderror
+    <div class="mb-3">
+        <label>Supplier</label>
+        <select name="supplier_id" class="border rounded px-2 py-1 w-full">
+            <option value="">-- Pilih Supplier --</option>
+            @foreach($suppliers as $s)
+                <option value="{{ $s->id }}">{{ $s->name }}</option>
+            @endforeach
+        </select>
+    </div>
 
-        <!-- Total -->
-        <input type="number" name="total" value="{{ old('total') }}" placeholder="Total" class="w-full border p-2" required>
-        @error('total') <p class="text-red-500">{{ $message }}</p> @enderror
+    <div class="mb-3">
+        <label>Tanggal</label>
+        <input type="date" name="date" class="border rounded px-2 py-1 w-full" required>
+    </div>
 
-        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
-            Save Transaction
-        </button>
-    </form>
+    <div class="mb-3">
+        <label>Produk</label>
+        <table class="w-full border">
+            <thead class="bg-gray-200">
+                <tr>
+                    <th class="p-2 border">Produk</th>
+                    <th class="p-2 border">Stock</th>
+                    <th class="p-2 border">Quantity</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($products as $product)
+                <tr>
+                    <td class="p-2 border">{{ $product->name }}</td>
+                    <td class="p-2 border">{{ $product->quantity }}</td>
+                    <td class="p-2 border">
+                        <input type="number" min="0" max="{{ $product->quantity }}" name="products[{{ $loop->index }}][quantity]" class="border rounded px-2 py-1 w-full">
+                        <input type="hidden" name="products[{{ $loop->index }}][id]" value="{{ $product->id }}">
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+
+    <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Simpan Transaksi</button>
+</form>
 </div>
 @endsection
