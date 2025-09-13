@@ -11,8 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('products', function (Blueprint $table) {
-            $table->enum('status',['panding','approve','reject'])->default('panding');
+        Schema::table('transactions', function (Blueprint $table) {
+           $table->decimal('total_operator', 15, 2)->nullable()->after('total');
+           $table->decimal('total_supplier', 15, 2)->nullable()->after('total_operator');
         });
     }
 
@@ -21,7 +22,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('products', function (Blueprint $table) {
+        Schema::table('transactions', function (Blueprint $table) {
             //
         });
     }

@@ -15,6 +15,10 @@ class Product extends Model
         return $this->belongsTo(Supplier::class);
     }
 
+    public function user(){
+        return $this->belongsTo(User::class);
+     }
+
     public function stoctmovements(){
         return $this->hasMany(StockMovement::class);
     }
@@ -22,4 +26,13 @@ class Product extends Model
     public function transactionItems(){
         return $this->hasMany(TransactionItem::class);
     }
+
+    public function transactions(){
+        return $this->hasManyThrough(Transaction::class, TransactionItem::class);
+    }
+    // Status standar
+    const STATUS_PENDING = 'pending';
+    const STATUS_APPROVED = 'approved';
+    const STATUS_REJECTED = 'rejected';
+
 }

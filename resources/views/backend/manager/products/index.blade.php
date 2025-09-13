@@ -58,10 +58,6 @@
                     <td class="px-4 py-2 border">{{ $product->supplier?->name ?? '-' }}</td>
                     <td class="px-4 py-2 border">{{ $product->lokasi_penyimpanan }}</td>
                     <td class="p-3 space-x-1">
-                        <a href="{{ route('backend.manager.products.edit', $product->id) }}" 
-                           class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-sm">
-                           Edit
-                        </a>
                         @if($product->status != 'approv')
                         <form action="{{ route('backend.manager.products.approve', $product->id) }}" 
                               method="POST" class="inline">
@@ -81,10 +77,6 @@
                 @endforelse
             </tbody>
         </table>
-    </div>
-
-    <div class="mt-4">
-        {{ $products->links() }}
     </div>
 </div>
 @endsection

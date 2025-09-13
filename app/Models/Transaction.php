@@ -16,10 +16,10 @@ class Transaction extends Model
 
    public function customer()
 {
-    return $this->belongsTo(Customer::class);
+    return $this->belongsTo(Customer::class, 'customer_id');
 }
 public function supplier(){
-    return $this->belongsTo(Supplier::class);
+    return $this->belongsTo(Supplier::class, 'supplier_id');
 }
 
 public function user(){
@@ -27,5 +27,14 @@ public function user(){
 }
 public function items(){
     return $this->hasMany(TransactionItem::class);
+}
+
+public function product()
+{
+    return $this->belongsTo(Product::class);
+}
+
+public function operator(){
+    return $this->belongsTo(User::class, 'user_id');
 }
 }

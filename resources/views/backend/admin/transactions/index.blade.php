@@ -1,68 +1,53 @@
 @extends('layouts.app')
+
 @section('content')
 <div class="p-6">
-    <div class="flex justify-between items-center mb-6">
-        <h1 class="text-2xl font-bold">Transactions</h1>
-        <a href="{{ route('backend.admin.transactions.create') }}"
-            class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-            + Add Transaction</a>
-    </div>
+    <h1 class="text-2xl font-bold mb-4">Admin Transactions</h1>
+    <a href="{{ route('backend.admin.transactions.create') }}"
+        class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 mb-4 inline-block">
+        + Add Transaction
+    </a>
 
-  <div class="overflow-x-auto">
-    <table class="w-full border border-gray-300 rounded-lg">
-      <thead class="bg-gray-100">
-                <tr>
-                    <th class="px-4 py-2 border">#</th>
-                    <th class="px-4 py-2 border">Invoice</th>
-                    <th class="px-4 py-2 border">Customer</th>
-                    <th class="px-4 py-2 border">Supplier</th>
-                    <th class="px-4 py-2 border">Type</th>
-                    <th class="px-4 py-2 border">Date</th>
-                    <th class="px-4 py-2 border">Total</th>
-                    <th class="px-4 py-2 text-center border">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($transactions as $key => $transaction)
-                <tr class="hover:bg-gray-50">
-                    <td class="px-4 py-2 border">{{ $key + 1 }}</td>
-                    <td class="px-4 py-2 border">{{ $transaction->invoice }}</td>
-                    <td class="px-4 py-2 border">{{ $transaction->customer->name ?? '-' }}</td>
-                    <td class="px-4 py-2 border">{{ $transaction->supplier->name ?? '-' }}</td>
-                    <td class="px-4 py-2 capitalize border">{{ $transaction->type }}</td>
-                    <td class="px-4 py-2 border">
-                        {{ $transaction->date instanceof \Carbon\Carbon ? $transaction->date->format('Y-m-d') : $transaction->date }}
-                    </td>
-                    <td class="px-4 py-2 border">{{ number_format($transaction->total,0,',','.') }}</td>
-                    <td class="px-4 py-2 text-center border">
-                        <a href="{{ route('backend.admin.transactions.edit', $transaction) }}"
-                            class="px-2 py-1 bg-green-500 text-white rounded">Edit</a>
+    <table class="w-full bg-white border rounded-lg shadow">
+        <thead class="bg-gray-100">
+            <tr>
+                <th class="px-4 py-2">Invoice</th>
+                <th class="px-4 py-2">Customer</th>
+                <th class="px-4 py-2">Supplier</th>
+                <th class="px-4 py-2">Total</th>
+                <th class="px-4 py-2">Date</th>
+                <th class="px-4 py-2">Status</th>
+                <th class="px-4 py-2">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($transactions as $trx)
+            <tr class="border-b">
+                <td class="px-4 py-2">{{ $trx->invoice }}</td>
+                <td class="px-4 py-2">{{ $trx->customer->name ?? '-' }}</td>
+                <td class="px-4 py-2">{{ $trx->supplier->name ?? '-' }}</td>
+                <td class="px-4 py-2">{{ number_format($trx->total,0,',','.') }}</td>
+                <td class="px-4 py-2">{{ $trx->date }}</td>
+                <td class="px-4 py-2">{{ ucfirst($trx->status) }}</td>
+                <td class="px-4 py-2">
+                    <a href="{{ route('backend.admin.transactions.edit',$trx->id) }}"
+                        class="px-3 py-1 bg-yellow-500 text-white rounded">Edit</a>
+                    <!-- Tombol Compare -->
+                    <a href="{{ route('backend.admin.transactions.compare', $trx->id) }}"
+                        class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600">
+                        Compare
+                    </a>
 
-                        <form action="{{ route('backend.admin.transactions.destroy', $transaction) }}" method="POST"
-                            class="inline">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="px-2 py-1 bg-red-500 text-white rounded"
-                                onclick="return confirm('Are you sure?')">Delete</button>
-                        </form>
-                    </td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
-
-    <div class="mt-4">
-        {{ $transactions->links() }}
-    </div>
-       <!-- Pagination -->
-    <div class="mt-4 flex justify-between items-center text-sm text-gray-600">
-        <p>
-            Showing {{ $transactions->firstItem() }} - {{ $transactions->lastItem() }} of {{ $transactions->total() }}
-        </p>
-        <div>
-            {{ $transactions->links('pagination::tailwind') }}
-        </div>
-    </div>
+                    <form action="{{ route('backend.admin.transactions.destroy',$trx->id) }}" method="POST"
+                        class="inline">
+                        @csrf @method('DELETE')
+                        <button class="px-3 py-1 bg-red-600 text-white rounded">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
+    <div class="mt-4">{{ $transactions->links() }}</div>
 </div>
 @endsection

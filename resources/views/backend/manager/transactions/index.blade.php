@@ -2,97 +2,46 @@
 
 @section('content')
 <div class="p-6">
-    <div class="flex justify-between items-center mb-6">
-        <h1 class="text-2xl font-bold">Transactions</h1>
-    </div>
-
-    @if(session('success'))
-    <div class="mb-4 p-3 bg-green-100 text-green-700 rounded">
-        {{ session('success') }}
-    </div>
-    @endif
-
-    <div class="overflow-x-auto bg-white rounded-lg shadow">
-        <table class="w-full border-collapse">
-            <thead class="bg-gray-200">
-                <tr>
-                    <th class="px-4 py-2 border">#</th>
-                    <th class="px-4 py-2 border">Invoice</th>
-                    <th class="px-4 py-2 border">Customer</th>
-                    <th class="px-4 py-2 border">Date</th>
-                    <th class="px-4 py-2 border">Type</th>
-                    <th class="px-4 py-2 border">Total</th>
-                    <th class="px-4 py-2 border">status</th>
-                    <th class="px-4 py-2 border">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse($transactions as $transaction)
-                <tr class="hover:bg-gray-50 border-t">
-                    <td class="px-4 py-2 border">{{ $loop->iteration }}</td>
-                    <td class="px-4 py-2 border">{{ $transaction->invoice }}</td>
-                    <td class="px-4 py-2 border">
-                        {{-- jika sudah ada relasi ke Customer model --}}
-                        {{ $transaction->customer->name ?? $transaction->customer_id }}
-                    </td>
-                    <td class="px-4 py-2 border">{{ $transaction->date }}</td>
-                    <td class="px-4 py-2 border">
-                        <span
-                            class="px-2 py-1 text-xs rounded 
-                {{ $transaction->type === 'pembelian' ? 'bg-blue-100 text-blue-700' : 'bg-purple-100 text-purple-700' }}">
-                            {{ ucfirst($transaction->type) }}
-                        </span>
-                    </td>
-                    <td class="px-4 py-2 border">{{ number_format($transaction->total, 0, ',', '.') }}</td>
-
-                    <td class="p-3">
-                        @if($transaction->status == 'approved')
-                        <span class="px-2 py-1 text-xs rounded bg-green-100 text-green-700">Approved</span>
-                        @elseif($transaction->status == 'rejected')
-                        <span class="px-2 py-1 text-xs rounded bg-red-100 text-red-700">Rejected</span>
+    <h1 class="text-2xl font-bold mb-4">Manager Transaction Validation</h1>
+    <table class="w-full bg-white border rounded-lg shadow">
+        <thead class="bg-gray-100">
+            <tr>
+                <th class="px-4 py-2">Invoice</th>
+                <th class="px-4 py-2">Customer</th>
+                <th class="px-4 py-2">Supplier</th>
+                <th class="px-4 py-2">Total</th>
+                <th class="px-4 py-2">Date</th>
+                <th class="px-4 py-2">Status</th>
+                <th class="px-4 py-2">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($transactions as $trx)
+                <tr class="border-b">
+                    <td class="px-4 py-2">{{ $trx->invoice }}</td>
+                    <td class="px-4 py-2">{{ $trx->customer->name ?? '-' }}</td>
+                    <td class="px-4 py-2">{{ $trx->supplier->name ?? '-' }}</td>
+                    <td class="px-4 py-2">{{ number_format($trx->total,0,',','.') }}</td>
+                    <td class="px-4 py-2">{{ $trx->date }}</td>
+                    <td class="px-4 py-2">{{ ucfirst($trx->status) }}</td>
+                    <td class="px-4 py-2">
+                        @if($trx->status == 'pending')
+                            <form action="{{ route('backend.manager.transactions.approve',$trx->id) }}" method="POST" class="inline">
+                                @csrf
+                                <button class="px-3 py-1 bg-green-600 text-white rounded">Approve</button>
+                            </form>
+                            <form action="{{ route('backend.manager.transactions.reject',$trx->id) }}" method="POST" class="inline">
+                                @csrf
+                                <button class="px-3 py-1 bg-red-600 text-white rounded">Reject</button>
+                            </form>
                         @else
-                        <span class="px-2 py-1 text-xs rounded bg-yellow-100 text-yellow-700">Pending</span>
+                            <span class="text-gray-500">No Action</span>
                         @endif
                     </td>
-                    <td class="px-4 py-2 text-center space-x-2">
-                              @if($transaction->status != 'approved')
-                        <form action="{{ route('backend.manager.transactions.approve', $transaction->id) }}" 
-                              method="POST" class="inline">
-                            @csrf
-                            <button type="submit" 
-                                    class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm">
-                                    Approve
-                            </button>
-                        </form>
-                        @endif
-                    </td>
-
                 </tr>
-                @empty
-                <tr>
-                    <td colspan="7" class="px-4 py-3 text-center text-gray-500">
-                        No transactions available
-                    </td>
-                </tr>
-                @endforelse
-            </tbody>
-        </table>
-    </div>
-
-    <div class="mt-4">
-        {{ $transactions->links() }}
-    </div>
-    
- <!-- Pagination -->
-    <div class="mt-4 flex justify-between items-center text-sm text-gray-600">
-        <p>
-            Menampilkan 
-            {{ $transactions->firstItem() }} - {{ $transactions->lastItem() }} 
-            dari {{ $transactions->total() }} produk
-        </p>
-        <div>
-            {{ $transactions->links('pagination::tailwind') }}
-        </div>
-    </div>
+            @endforeach
+        </tbody>
+    </table>
+    <div class="mt-4">{{ $transactions->links() }}</div>
 </div>
 @endsection

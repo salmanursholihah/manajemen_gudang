@@ -105,6 +105,16 @@ Route::prefix('admin')->name('backend.admin.')->middleware(['auth','role:Admin']
     Route::post('/admin/generate-reset-link/{email}', [AdminResetPasswordController::class, 'generate'])
         ->name('generateResetLink');
 
+        
+//  // Tambahan route untuk compare dan approve
+//     Route::get('transactions/{id}/compare', [App\Http\Controllers\Admin\AdminTransactionController::class, 'compare'])
+//         ->name('transactions.compare');
+
+//     Route::post('transactions/{id}/approve', [App\Http\Controllers\Admin\AdminTransactionController::class, 'approve'])
+//         ->name('transactions.approve');
+
+Route::get('/transactions/{id}/compare', [App\Http\Controllers\Admin\AdminTransactionController::class, 'compare'])->name('transactions.compare');
+Route::post('/transactions/{id}/approve', [App\Http\Controllers\Admin\AdminTransactionController::class, 'approve'])->name('transactions.approve');
 
 });
 

@@ -2,54 +2,44 @@
 
 @section('content')
 <div class="p-6">
-    <div class="flex justify-between items-center mb-6">
-        <h1 class="text-2xl font-bold">Transactions</h1>
-        <a href="{{ route('backend.supplier.transactions.create') }}"
-            class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-            + Add Transaction
-        </a>
-    </div>
+    <h1 class="text-2xl font-bold mb-4">Supplier Transactions (Draft Inbound)</h1>
+    <a href="{{ route('backend.supplier.transactions.create') }}"
+        class="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 mb-4 inline-block">
+        + Create Draft
+    </a>
 
-    <div class="overflow-x-auto rounded-lg shadow">
-  <table class="min-w-full border border-gray-300 text-sm">
-    <thead class="bg-gray-200 text-gray-700">
-                <tr>
-                    <th class="px-4 py-2 border">#</th>
-                    <th class="px-4 py-2 border">Invoice</th>
-                    <th class="px-4 py-2 border">Customer</th>
-                    <th class="px-4 py-2 border">Supplier</th>
-                    <th class="px-4 py-2 border">Type</th>
-                    <th class="px-4 py-2 border">Date</th>
-                    <th class="px-4 py-2 border">Total</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($transactions as $key => $transaction)
-                <tr class="hover:bg-gray-50">
-                    <td class="px-4 py-2 border">{{ $transactions->firstItem() + $key }}</td>
-                    <td class="px-4 py-2 border">{{ $transaction->invoice }}</td>
-                    <td class="px-4 py-2 border">{{ $transaction->customer->name ?? '-' }}</td>
-                    <td class="px-4 py-2 border">{{ $transaction->supplier->name ?? '-' }}</td>
-                    <td class="px-4 py-2 capitalize border">{{ $transaction->type }}</td>
-                    <td class="px-4 py-2 border">{{ $transaction->date->format('Y-m-d') }}</td>
-                    <td class="px-4 py-2 border">{{ number_format($transaction->total,0,'.','.') }}</td>
-                  
-                    </td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
-
-    <!-- Pagination -->
-    <div class="mt-4 flex justify-between items-center text-sm text-gray-600">
-        <p>
-            Menampilkan {{ $transactions->firstItem() }} - {{ $transactions->lastItem() }}
-            dari {{ $transactions->total() }} transaksi
-        </p>
-        <div>
-            {{ $transactions->links('pagination::tailwind') }}
-        </div>
-    </div>
+    <table class="w-full bg-white border rounded-lg shadow">
+        <thead class="bg-gray-100">
+            <tr>
+                <th class="px-4 py-2 text-left">Invoice</th>
+                <th class="px-4 py-2 text-left">Customer</th>
+                <th class="px-4 py-2 text-left">Total</th>
+                <th class="px-4 py-2 text-left">Date</th>
+                <th class="px-4 py-2 text-left">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @forelse($transactions as $trx)
+            <tr class="border-b">
+                <td class="px-4 py-2">{{ $trx->invoice }}</td>
+                <td class="px-4 py-2">{{ $trx->customer->name ?? '-' }}</td>
+                <td class="px-4 py-2">{{ number_format($trx->total_supplier,0,',','.') }}</td>
+                <td class="px-4 py-2">{{ $trx->date }}</td>
+                <td class="px-4 py-2">
+                    <span
+                        class="px-2 py-1 rounded text-xs 
+                            {{ $trx->status == 'pending' ? 'bg-yellow-200 text-yellow-800' : 'bg-green-200 text-green-800' }}">
+                        {{ ucfirst($trx->status) }}
+                    </span>
+                </td>
+            </tr>
+            @empty
+            <tr>
+                <td colspan="5" class="text-center py-3">No transactions</td>
+            </tr>
+            @endforelse
+        </tbody>
+    </table>
+    <div class="mt-4">{{ $transactions->links() }}</div>
 </div>
 @endsection

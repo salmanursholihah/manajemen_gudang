@@ -80,15 +80,5 @@
     </table>
   </div>
 
-  <!-- Pagination -->
-  <div class="mt-4 flex flex-col md:flex-row md:justify-between md:items-center text-sm text-gray-600 gap-2">
-    <p>
-      Menampilkan {{ $products->firstItem() }} - {{ $products->lastItem() }}
-      dari {{ $products->total() }} produk
-    </p>
-    <div>
-      {{ $products->links('pagination::tailwind') }}
-    </div>
-  </div>
 </div>
 @endsection

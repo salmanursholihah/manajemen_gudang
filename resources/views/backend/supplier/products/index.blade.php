@@ -25,14 +25,9 @@
   <table class="min-w-full border border-gray-300 text-sm">
     <thead class="bg-gray-200 text-gray-700">
         <tr>
-          <th class="px-4 py-2 border">Id</th>
+          <th class="px-4 py-2 border">#</th>
           <th class="px-4 py-2 border">Name</th>
           <th class="px-4 py-2 border">Category</th>
-          <th class="px-4 py-2 border">Suppliers</th>
-          <th class="px-4 py-2 border">Stock</th>
-          <th class="px-4 py-2 border">satuan</th>
-          <th class="px-4 py-2 border">deskripsi</th>
-          <th class="px-4 py-2 border">lokasi penyimpanan</th>
           <th class="px-4 py-2 border">image</th>
           <th class="px-4 py-2 border">Actions</th>
         </tr>
@@ -43,11 +38,6 @@
                 <td class="px-4 py-2 border">{{ $loop->iteration }}</td>
                 <td class="px-4 py-2 border">{{ $product->name }}</td>
                 <td class="px-4 py-2 border">{{ $product->category }}</td>
-                <td class="px-4 py-2 border">{{ $product->supplier_id }}</td>
-                <td class="px-4 py-2 border">{{ $product->stock }}</td>
-                <td class="px-4 py-2 border">{{ $product->satuan }}</td>
-                <td class="px-4 py-2 border">{{ $product->deskripsi }}</td>
-                <td class="px-4 py-2 border">{{ $product->lokasi_penyimpanan }}</td>
                 <td class="px-4 py-2 border">{{ $product->image }}</td>
                 <td class="px-4 py-2 border">
                     <a href="{{ route('backend.supplier.products.edit', $product) }}" class="bg-green-500 text-white px-3 py-1 rounded">Edit</a>
@@ -64,16 +54,5 @@
     </table>
   </div>
 
- <!-- Pagination -->
-    <div class="mt-4 flex justify-between items-center text-sm text-gray-600">
-        <p>
-            Menampilkan 
-            {{ $products->firstItem() }} - {{ $products->lastItem() }} 
-            dari {{ $products->total() }} produk
-        </p>
-        <div>
-            {{ $products->links('pagination::tailwind') }}
-        </div>
-    </div>
 </div>
 @endsection
