@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use App\Models\Supplier;
 
 class AdminProductController extends Controller
 {
@@ -15,46 +16,85 @@ class AdminProductController extends Controller
 
     public function create()
     {
-        return view('backend.admin.products.create');
+        $suppliers = Supplier::all();
+        return view('backend.admin.products.create', compact('suppliers'));
     }
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'name'      => 'required',
-            'category'  => 'required',
-            'image'     => 'nullable|image',
-            'supplier_id' => 'required|exists:suppliers,id'
-        ]);
+   public function store(Request $request)
+{
+    $request->validate([
+        'name'              => 'required|string',
+        'category'          => 'required|string',
+        'supplier_id'       => 'required|exists:suppliers,id',
+        'stock'             => 'required|string',
+        'satuan'            => 'required|string',
+        'quantity'          => 'required|integer|min:0',
+        'deskripsi'         => 'nullable|string',
+        'lokasi_penyimpanan'=> 'required|string',
+        'price'             => 'required|numeric|min:0',
+        'image'             => 'nullable|image',
+    ]);
 
-        $data = $request->only(['name', 'category', 'supplier_id']);
-        if ($request->hasFile('image')) {
-            $data['image'] = $request->file('image')->store('products', 'public');
-        }
-        $data['status'] = Product::STATUS_APPROVED; // Admin langsung approved
+    $data = $request->only([
+        'name',
+        'category',
+        'supplier_id',
+        'stock',
+        'satuan',
+        'quantity',
+        'deskripsi',
+        'lokasi_penyimpanan',
+        'price'
+    ]);
 
-        Product::create($data);
-
-        return redirect()->route('backend.admin.products.index')->with('success', 'Product created');
+    if ($request->hasFile('image')) {
+        $data['image'] = $request->file('image')->store('products', 'public');
     }
+
+    $data['status'] = 'approved'; // langsung approved
+
+    Product::create($data);
+
+    return redirect()->route('backend.admin.products.index')->with('success', 'Product created');
+}
+
 
     public function edit(Product $product)
     {
-        return view('backend.admin.products.edit', compact('product'));
+        $suppliers = Supplier::all();
+        return view('backend.admin.products.edit', compact('product','suppliers'));
     }
 
     public function update(Request $request, Product $product)
     {
-        $request->validate([
-            'name'     => 'required',
-            'category' => 'required',
-            'image'    => 'nullable|image'
-        ]);
+      $request->validate([
+        'name'              => 'required|string',
+        'category'          => 'required|string',
+        'supplier_id'       => 'required|exists:suppliers,id',
+        'stock'             => 'required|string',
+        'satuan'            => 'required|string',
+        'quantity'          => 'required|integer|min:0',
+        'deskripsi'         => 'nullable|string',
+        'lokasi_penyimpanan'=> 'required|string',
+        'price'             => 'required|numeric|min:0',
+        'image'             => 'nullable|image',
+    ]);
 
-        $data = $request->only(['name', 'category']);
-        if ($request->hasFile('image')) {
-            $data['image'] = $request->file('image')->store('products', 'public');
-        }
+    $data = $request->only([
+        'name',
+        'category',
+        'supplier_id',
+        'stock',
+        'satuan',
+        'quantity',
+        'deskripsi',
+        'lokasi_penyimpanan',
+        'price'
+    ]);
+
+    if($request->hasFile('image')){
+        $data['image'] = $request->file('image')->store('products','public');
+    }
 
         $product->update($data);
 

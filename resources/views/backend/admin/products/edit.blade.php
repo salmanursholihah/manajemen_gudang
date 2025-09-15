@@ -32,8 +32,14 @@
         <!-- Stock -->
         <input type="number" name="stock" value="{{ old('stock', $product->stock) }}" class="w-full border p-2" required>
 
+        <!-- Quantity -->
+        <input type="number" name="quantity" value="{{ old('quantity', $product->quantity) }}" class="w-full border p-2" required>
+
         <!-- Satuan -->
         <input type="text" name="satuan" value="{{ old('satuan', $product->satuan) }}" class="w-full border p-2" required>
+
+        <!-- Price -->
+        <input type="number" step="0.01" name="price" value="{{ old('price', $product->price) }}" class="w-full border p-2" required>
 
         <!-- Deskripsi -->
         <textarea name="deskripsi" class="w-full border p-2">{{ old('deskripsi', $product->deskripsi) }}</textarea>
