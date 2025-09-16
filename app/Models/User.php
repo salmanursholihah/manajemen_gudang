@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Psy\TabCompletion\Matcher\FunctionsMatcher;
 
 class User extends Authenticatable
 {
@@ -45,4 +46,15 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function products(){
+        return $this->hasMany(Product::class, 'supplier_id');
+    }
+
+    public Function transactions(){
+        return $this->hasMany(Transaction::class);
+    }
+    public function supplier(){
+        return $this->hasOne(Supplier::class);
+    }
 }

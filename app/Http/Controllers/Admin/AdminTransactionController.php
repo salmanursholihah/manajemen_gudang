@@ -112,24 +112,34 @@ public function update(Request $request, Transaction $transaction)
 
 
 // menampilkan halaman compare
-    public function compare($id)
-    {
-        $transaction = Transaction::findOrFail($id);
 
-        // data operator
-        $operatorData = [
-            'total'    => $transaction->total_operator ?? '-',
-            'document' => $transaction->document_operator ?? 'Tidak ada',
-        ];
+public function compare($invoice)
+{
+    $transactions = \App\Models\Transaction::where('invoice', $invoice)->get();
 
-        // data supplier
-        $supplierData = [
-            'total'    => $transaction->total_supplier ?? '-',
-            'document' => $transaction->document_supplier ?? 'Tidak ada',
-        ];
+    // Ambil data operator & supplier dari kolom dokumen
+    $supplier = $transactions->firstWhere('document_supplier', '!=', null);
+    $operator = $transactions->firstWhere('document_operator', '!=', null);
 
-        return view('backend.admin.transactions.compare', compact('transaction', 'operatorData', 'supplierData'));
-    }
+    $supplierData = [
+        'total' => $supplier->total ?? 'Tidak ada',
+        'document' => $supplier->document_supplier ?? 'Tidak ada',
+    ];
+
+    $operatorData = [
+        'total' => $operator->total ?? 'Tidak ada',
+        'document' => $operator->document_operator ?? 'Tidak ada',
+    ];
+
+    return view('backend.admin.transactions.compare', compact(
+        'supplierData',
+        'operatorData',
+        'invoice'
+    ));
+}
+
+
+
 
     // contoh approve transaksi
     public function approve($id)

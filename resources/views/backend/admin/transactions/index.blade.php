@@ -33,10 +33,9 @@
                     <a href="{{ route('backend.admin.transactions.edit',$trx->id) }}"
                         class="px-3 py-1 bg-yellow-500 text-white rounded">Edit</a>
                     <!-- Tombol Compare -->
-                    <a href="{{ route('backend.admin.transactions.compare', $trx->id) }}"
-                        class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600">
-                        Compare
-                    </a>
+                    <a href="{{ route('backend.admin.transactions.compare', $trx->invoice) }}"
+                        class="bg-blue-600 text-white px-2 py-1 rounded">Compare</a>
+
 
                     <form action="{{ route('backend.admin.transactions.destroy',$trx->id) }}" method="POST"
                         class="inline">

@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="p-6">
-    <h2 class="text-xl font-semibold mb-4">Compare Transaction</h2>
+    <h2 class="text-xl font-semibold mb-4">Compare Transaction (Invoice: {{ $invoice }})</h2>
 
     <table class="table-auto border w-full">
         <thead class="bg-gray-200">
@@ -22,14 +22,18 @@
                 <td class="border px-4 py-2">Dokumen</td>
                 <td class="border px-4 py-2">
                     @if($operatorData['document'] !== 'Tidak ada')
-                        <a href="{{ asset('storage/'.$operatorData['document']) }}" target="_blank" class="text-blue-600">Lihat</a>
+                        <a href="{{ asset('storage/'.$operatorData['document']) }}" 
+                           target="_blank" 
+                           class="text-blue-600">Lihat</a>
                     @else
                         Tidak ada
                     @endif
                 </td>
                 <td class="border px-4 py-2">
                     @if($supplierData['document'] !== 'Tidak ada')
-                        <a href="{{ asset('storage/'.$supplierData['document']) }}" target="_blank" class="text-blue-600">Lihat</a>
+                        <a href="{{ asset('storage/'.$supplierData['document']) }}" 
+                           target="_blank" 
+                           class="text-blue-600">Lihat</a>
                     @else
                         Tidak ada
                     @endif
@@ -38,9 +42,11 @@
         </tbody>
     </table>
 
-    <form action="{{ route('backend.admin.transactions.approve', $transaction->id) }}" method="POST" class="mt-4">
+    <form action="{{ route('backend.admin.transactions.approve', $invoice) }}" method="POST" class="mt-4">
         @csrf
-        <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded">Approve</button>
+        <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded">
+            Approve
+        </button>
     </form>
 </div>
 @endsection

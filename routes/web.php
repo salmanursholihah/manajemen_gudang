@@ -115,6 +115,10 @@ Route::prefix('admin')->name('backend.admin.')->middleware(['auth','role:Admin']
 
 Route::get('/transactions/{id}/compare', [App\Http\Controllers\Admin\AdminTransactionController::class, 'compare'])->name('transactions.compare');
 Route::post('/transactions/{id}/approve', [App\Http\Controllers\Admin\AdminTransactionController::class, 'approve'])->name('transactions.approve');
+// routes/web.php
+Route::get('/admin/transactions/compare/{invoice}', [App\Http\Controllers\Admin\AdminTransactionController::class, 'compare'])
+    ->name('backend.admin.transactions.compare');
+
 
 });
 

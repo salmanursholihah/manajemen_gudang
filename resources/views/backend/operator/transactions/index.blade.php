@@ -31,7 +31,7 @@
                     <td class="px-4 py-2 border">{{ ucfirst($trx->type) }}</td>
                     <td class="px-4 py-2 border">{{ $trx->customer->name ?? '-' }}</td>
                     <td class="px-4 py-2 border">{{ $trx->supplier->name ?? '-' }}</td>
-                    <td class="px-4 py-2 border">{{ number_format($trx->total,0,'.','.') }}</td>
+                    <td class="px-4 py-2">{{ number_format($trx->total_supplier,0,',','.') }}</td>
                     <td class="px-4 py-2 border">{{ $trx->date->format('Y-m-d') }}</td>
                     <td class="px-4 py-2 border">
                         <span class="px-2 py-1 rounded
@@ -44,15 +44,18 @@
                     <td class="px-4 py-2 border">
                         <ul class="list-disc pl-4">
                             @foreach($trx->items as $item)
-                            <li>{{ $item->product->name ?? '-' }} ({{ $item->quantity }} {{ $item->product->satuan ?? '' }})</li>
+                            <li>{{ $item->product->name ?? '-' }} ({{ $item->quantity }}
+                                {{ $item->product->satuan ?? '' }})</li>
                             @endforeach
                         </ul>
                     </td>
                     <td class="px-4 py-2 border flex gap-2 justify-center">
-                        <a href="{{ route('backend.operator.transactions.edit', $trx->id) }}" class="px-2 py-1 bg-green-500 text-white rounded">Edit</a>
+                        <a href="{{ route('backend.operator.transactions.edit', $trx->id) }}"
+                            class="px-2 py-1 bg-green-500 text-white rounded">Edit</a>
                         <form action="{{ route('backend.operator.transactions.destroy', $trx->id) }}" method="POST">
                             @csrf @method('DELETE')
-                            <button class="px-2 py-1 bg-red-500 text-white rounded" onclick="return confirm('Yakin ingin hapus?')">Delete</button>
+                            <button class="px-2 py-1 bg-red-500 text-white rounded"
+                                onclick="return confirm('Yakin ingin hapus?')">Delete</button>
                         </form>
                     </td>
                 </tr>

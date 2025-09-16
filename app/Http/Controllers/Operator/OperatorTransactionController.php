@@ -33,57 +33,63 @@ class OperatorTransactionController extends Controller
         return view('backend.operator.transactions.create', compact('customers','suppliers','products','transactions'));
     }
 
-   public function store(Request $request)
+public function store(Request $request)
 {
-    // ✅ Validasi sesuai struktur form
     $request->validate([
-        'invoice' => 'required|string|unique:transactions',
-        'customer_id' => 'required|exists:customers,id',
+        'invoice' => 'required|string',
+        'customer_id' => 'nullable|exists:customers,id',
         'supplier_id' => 'nullable|exists:suppliers,id',
-        'type' => 'required|in:pembelian,pembayaran', // samakan dengan create.blade.php
+        'type' => 'required|in:pembelian,pembayaran,mutation',
         'date' => 'required|date',
         'products' => 'required|array',
-        'products.*' => 'required|exists:products,id',
+        'products.*' => 'exists:products,id',
         'quantities' => 'required|array',
-        'quantities.*' => 'required|integer|min:1',
+        'quantities.*' => 'integer|min:1',
+        'document_operator' => 'nullable|file|mimes:pdf,jpg,png,doc,docx|max:2048',
     ]);
 
-    // ✅ Hitung total transaksi
+    // Hitung total dari produk
     $total = 0;
-    foreach ($request->products as $index => $productId) {
+    foreach ($request->products as $i => $productId) {
         $product = Product::findOrFail($productId);
-        $quantity = $request->quantities[$index];
-        $total += $product->price * $quantity;
+        $total += $product->price * $request->quantities[$i];
     }
 
-    // ✅ Simpan transaksi
+    // Upload dokumen operator jika ada
+    $docPath = null;
+    if ($request->hasFile('document_operator')) {
+        $docPath = $request->file('document_operator')->store('documents/operator', 'public');
+    }
+
     $transaction = Transaction::create([
         'invoice' => $request->invoice,
         'customer_id' => $request->customer_id,
         'supplier_id' => $request->supplier_id,
         'type' => $request->type,
         'total' => $total,
-        'date' => $request->date,
+        'total_operator' => $request->total_operator ?? $total,
         'status' => 'pending',
+        'date' => $request->date,
+        'document_operator' => $docPath,
         'user_id' => Auth::id(),
     ]);
 
-    // ✅ Simpan item transaksi + update stock
-    foreach ($request->products as $index => $productId) {
+    // Simpan item transaksi
+    foreach ($request->products as $i => $productId) {
         $product = Product::findOrFail($productId);
-        $quantity = $request->quantities[$index];
+        $quantity = $request->quantities[$i];
 
         TransactionItem::create([
             'transaction_id' => $transaction->id,
-            'product_id' => $product->id,
+            'product_id' => $productId,
             'quantity' => $quantity,
             'price' => $product->price,
         ]);
 
-        // update stok berdasarkan tipe transaksi
-        if ($request->type === 'inbound') {
+        // Update stok sesuai tipe transaksi
+        if ($request->type === 'pembelian') {
             $product->increment('stock', $quantity);
-        } else {
+        } elseif ($request->type === 'pembayaran') {
             $product->decrement('stock', $quantity);
         }
     }
@@ -91,7 +97,6 @@ class OperatorTransactionController extends Controller
     return redirect()->route('backend.operator.transactions.index')
         ->with('success', 'Transaction created successfully.');
 }
-
 
     public function edit(Transaction $transaction)
     {
@@ -102,17 +107,25 @@ class OperatorTransactionController extends Controller
         return view('backend.operator.transactions.edit', compact('transaction','customers','suppliers','products'));
     }
 
-    public function update(Request $request, Transaction $transaction)
-    {
-        $request->validate([
-            'status' => 'required|in:pending,approved,rejected',
-        ]);
+  public function update(Request $request, Transaction $transaction)
+{
+    $request->validate([
+        'status' => 'required|in:pending,approved,rejected,draft',
+        'document_operator' => 'nullable|file|mimes:pdf,jpg,png,doc,docx|max:2048',
+    ]);
 
-        $transaction->update(['status' => $request->status]);
+    $data = ['status' => $request->status];
 
-        return redirect()->route('backend.operator.transactions.index')
-                         ->with('success','Transaction updated');
+    if ($request->hasFile('document_operator')) {
+        $data['document_operator'] = $request->file('document_operator')->store('documents/operator', 'public');
     }
+
+    $transaction->update($data);
+
+    return redirect()->route('backend.operator.transactions.index')
+                     ->with('success','Transaction updated');
+}
+
 
     public function destroy(Transaction $transaction)
     {
