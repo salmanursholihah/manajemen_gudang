@@ -106,4 +106,14 @@ class AdminProductController extends Controller
         $product->delete();
         return back()->with('success', 'Product deleted');
     }
+
+    protected function validateProduct(Request $request)
+{
+    return $request->validate([
+        'name' => 'required|string|max:255',
+        'price' => 'required|numeric',
+        'description' => 'nullable|string',
+    ]);
+}
+
 }

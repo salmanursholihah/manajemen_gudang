@@ -1,63 +1,130 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container mx-auto p-6">
-    <h1 class="text-2xl font-bold mb-4">Edit Transaction</h1>
+<div class="max-w-3xl mx-auto bg-white shadow-md rounded-lg p-6">
+    <h2 class="text-2xl font-bold mb-6">Edit Transaction</h2>
 
-    <form action="{{ route('backend.admin.transactions.update', $transaction->id) }}" method="POST" class="space-y-4">
+    <form action="{{ route('backend.admin.transactions.update', $transaction->id) }}" 
+          method="POST" enctype="multipart/form-data" class="space-y-4">
         @csrf
         @method('PUT')
 
-        <!-- Invoice -->
-        <input type="text" name="invoice" value="{{ old('invoice', $transaction->invoice) }}" 
-               placeholder="Invoice" class="w-full border p-2 rounded" required>
-        @error('invoice') <p class="text-red-500">{{ $message }}</p> @enderror
+        {{-- Invoice --}}
+        <div>
+            <label for="invoice" class="block font-medium">Invoice</label>
+            <input type="text" name="invoice" id="invoice" 
+                   value="{{ old('invoice', $transaction->invoice) }}" 
+                   class="w-full border rounded p-2">
+            @error('invoice')
+                <p class="text-red-500 text-sm">{{ $message }}</p>
+            @enderror
+        </div>
 
-        <!-- Customer -->
-        <select name="customer_id" class="w-full border p-2 rounded" required>
-            <option value="">-- Select Customer --</option>
-            @foreach($customers as $customer)
-                <option value="{{ $customer->id }}" 
-                    {{ old('customer_id', $transaction->customer_id) == $customer->id ? 'selected' : '' }}>
-                    {{ $customer->name }}
-                </option>
-            @endforeach
-        </select>
-        @error('customer_id') <p class="text-red-500">{{ $message }}</p> @enderror
+        {{-- Customer --}}
+        <div>
+            <label for="customer_id" class="block font-medium">Customer</label>
+            <select name="customer_id" id="customer_id" class="w-full border rounded p-2">
+                <option value="">-- pilih customer --</option>
+                @foreach($customers as $customer)
+                    <option value="{{ $customer->id }}" 
+                        {{ old('customer_id', $transaction->customer_id) == $customer->id ? 'selected' : '' }}>
+                        {{ $customer->name }}
+                    </option>
+                @endforeach
+            </select>
+            @error('customer_id')
+                <p class="text-red-500 text-sm">{{ $message }}</p>
+            @enderror
+        </div>
 
-        <!-- Supplier -->
-        <select name="supplier_id" class="w-full border p-2 rounded" required>
-            <option value="">-- Select Supplier --</option>
-            @foreach($suppliers as $supplier)
-                <option value="{{ $supplier->id }}" 
-                    {{ old('supplier_id', $transaction->supplier_id) == $supplier->id ? 'selected' : '' }}>
-                    {{ $supplier->name }}
-                </option>
-            @endforeach
-        </select>
-        @error('supplier_id') <p class="text-red-500">{{ $message }}</p> @enderror
+        {{-- Supplier --}}
+        <div>
+            <label for="supplier_id" class="block font-medium">Supplier</label>
+            <select name="supplier_id" id="supplier_id" class="w-full border rounded p-2">
+                <option value="">-- pilih supplier --</option>
+                @foreach($suppliers as $supplier)
+                    <option value="{{ $supplier->id }}" 
+                        {{ old('supplier_id', $transaction->supplier_id) == $supplier->id ? 'selected' : '' }}>
+                        {{ $supplier->name }}
+                    </option>
+                @endforeach
+            </select>
+            @error('supplier_id')
+                <p class="text-red-500 text-sm">{{ $message }}</p>
+            @enderror
+        </div>
 
-        <!-- Type -->
-        <select name="type" class="w-full border p-2 rounded" required>
-            <option value="">-- Select Type --</option>
-            <option value="pembelian" {{ old('type', $transaction->type) == 'pembelian' ? 'selected' : '' }}>Pembelian</option>
-            <option value="pembayaran" {{ old('type', $transaction->type) == 'pembayaran' ? 'selected' : '' }}>Pembayaran</option>
-        </select>
-        @error('type') <p class="text-red-500">{{ $message }}</p> @enderror
+        {{-- Type --}}
+        <div>
+            <label for="type" class="block font-medium">Type</label>
+            <select name="type" id="type" class="w-full border rounded p-2">
+                <option value="pembelian" {{ old('type', $transaction->type) == 'pembelian' ? 'selected' : '' }}>Pembelian</option>
+                <option value="pembayaran" {{ old('type', $transaction->type) == 'pembayaran' ? 'selected' : '' }}>Pembayaran</option>
+                <option value="mutation" {{ old('type', $transaction->type) == 'mutation' ? 'selected' : '' }}>Mutation</option>
+            </select>
+            @error('type')
+                <p class="text-red-500 text-sm">{{ $message }}</p>
+            @enderror
+        </div>
 
-        <!-- Date -->
-        <input type="date" name="date" value="{{ old('date', $transaction->date->format('Y-m-d')) }}" 
-               class="w-full border p-2 rounded" required>
-        @error('date') <p class="text-red-500">{{ $message }}</p> @enderror
+        {{-- Total --}}
+        <div>
+            <label for="total" class="block font-medium">Total</label>
+            <input type="number" name="total" id="total" 
+                   value="{{ old('total', $transaction->total) }}" 
+                   class="w-full border rounded p-2">
+            @error('total')
+                <p class="text-red-500 text-sm">{{ $message }}</p>
+            @enderror
+        </div>
 
-        <!-- Total -->
-        <input type="number" name="total" value="{{ old('total', $transaction->total) }}" 
-               placeholder="Total" class="w-full border p-2 rounded" required>
-        @error('total') <p class="text-red-500">{{ $message }}</p> @enderror
+        {{-- Date --}}
+        <div>
+            <label for="date" class="block font-medium">Date</label>
+            <input type="date" name="date" id="date" 
+                   value="{{ old('date', $transaction->date) }}" 
+                   class="w-full border rounded p-2">
+            @error('date')
+                <p class="text-red-500 text-sm">{{ $message }}</p>
+            @enderror
+        </div>
 
-        <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">
-            Update Transaction
-        </button>
+        {{-- Status --}}
+        <div>
+            <label for="status" class="block font-medium">Status</label>
+            <select name="status" id="status" class="w-full border rounded p-2">
+                <option value="draft" {{ old('status', $transaction->status) == 'draft' ? 'selected' : '' }}>Draft</option>
+                <option value="pending" {{ old('status', $transaction->status) == 'pending' ? 'selected' : '' }}>Pending</option>
+                <option value="approved" {{ old('status', $transaction->status) == 'approved' ? 'selected' : '' }}>Approved</option>
+                <option value="rejected" {{ old('status', $transaction->status) == 'rejected' ? 'selected' : '' }}>Rejected</option>
+            </select>
+            @error('status')
+                <p class="text-red-500 text-sm">{{ $message }}</p>
+            @enderror
+        </div>
+
+        {{-- Document --}}
+        <div>
+            <label for="document" class="block font-medium">Document</label>
+            <input type="file" name="document" id="document" class="w-full border rounded p-2">
+            @if($transaction->document)
+                <p class="mt-2 text-sm text-gray-600">Current file: 
+                    <a href="{{ asset('storage/'.$transaction->document) }}" target="_blank" class="text-blue-500 underline">
+                        {{ basename($transaction->document) }}
+                    </a>
+                </p>
+            @endif
+            @error('document')
+                <p class="text-red-500 text-sm">{{ $message }}</p>
+            @enderror
+        </div>
+
+        {{-- Submit --}}
+        <div class="pt-4">
+            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">
+                Update Transaction
+            </button>
+        </div>
     </form>
 </div>
 @endsection

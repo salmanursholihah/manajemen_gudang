@@ -83,7 +83,7 @@ public function update(Request $request, Transaction $transaction)
         'invoice'     => 'required|string|unique:transactions,invoice,' . $transaction->id,
         'customer_id' => 'nullable|exists:customers,id',
         'supplier_id' => 'nullable|exists:suppliers,id',
-        'type'        => 'required|in:inbound,outbound,mutation',
+        'type'        => 'required|in:pembelian,pembayaran,mutation',
         'total'       => 'required|numeric',
         'date'        => 'required|date',
         'status'      => 'required|in:draft,pending,approved,rejected',
