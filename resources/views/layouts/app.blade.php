@@ -65,10 +65,12 @@
     <!-- Navbar (Mobile Header) -->
     <header class="bg-emerald-600 text-white flex items-center justify-between px-4 py-3 md:hidden">
         <div class="flex items-center space-x-2">
-            <img src="{{ asset('storage/' . setting('app_logo', 'default-logo.png')) }}" alt="Logo"
-                class="h-10 w-10 rounded-full">
-            <span class="font-bold">{{ setting('app_name', 'Manajemen Gudang') }}</span>
-        </div>
+    <img src="{{ asset('storage/' . setting('settings', 'default-logo.png')) }}" 
+         alt="Logo"
+         class="h-10 w-10 rounded-full">
+    <span class="font-bold">{{ setting('app_name', 'Manajemen Gudang') }}</span>
+</div>
+
         <button @click="sidebarOpen = !sidebarOpen">
             <i class="fas fa-bars text-2xl"></i>
         </button>
@@ -109,7 +111,7 @@
                         ['icon'=>'fa-exchange-alt', 'name'=>'Transactions', 'route'=>'backend.admin.transactions.index'],
                         ['icon'=>'fa-truck', 'name'=>'Suppliers', 'route'=>'backend.admin.suppliers.index'],
                         ['icon'=>'fa-users', 'name'=>'Customers', 'route'=>'backend.admin.customers.index'],
-                        ['icon'=>'fa-chart-bar', 'name'=>'Reports', 'route'=>'backend.admin.reports.index'],
+                        ['icon'=>'fa-chart-bar', 'name'=>'Reports', 'route'=>'reports.index'],
                         ['icon'=>'fa-user-cog', 'name'=>'User Management', 'route'=>'backend.admin.users.index'],
                         ['icon'=>'fa-cog', 'name'=>'Setting', 'route'=>'backend.admin.settings.index'],
                         ['icon'=>'fa-cog', 'name'=>'setting Landing', 'route'=>'backend.admin.landings.index'],

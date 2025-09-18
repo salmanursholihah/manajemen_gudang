@@ -27,7 +27,7 @@ class AdminUserController extends Controller
             'name'     => 'required|string|max:255',
             'email'    => 'required|email|unique:users',
             'password' => 'required|string|min:6|confirmed',
-            'role'     => 'required|string|in:Admin,Manager,Operator',
+            'role'     => 'required|string|in:Admin,Manager,Operator,supplier',
             'image'    => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
         ]);
 
@@ -38,7 +38,17 @@ class AdminUserController extends Controller
             $data['image'] = $request->file('image')->store('users', 'public');
         }
 
-        User::create($data);
+        $user = User::create($data);
+
+        if($user->role === 'supplier'){
+            \App\Models\Supplier::firstOrCreate(
+['user_id' => $user->id],
+[
+    'name'=>$user->name,
+    'email' =>$user->email,
+]
+);
+        }
 
         return redirect()->route('backend.admin.users.index')->with('success', 'User created successfully.');
     }
@@ -54,7 +64,7 @@ class AdminUserController extends Controller
             'name'     => 'required|string|max:255',
             'email'    => 'required|email|unique:users,email,' . $user->id,
             'password' => 'nullable|string|min:6|confirmed',
-            'role'     => 'required|string|in:Admin,Manager,Operator',
+            'role'     => 'required|string|in:Admin,Manager,Operator,supplier',
             'image'    => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
         ]);
 
@@ -71,6 +81,16 @@ class AdminUserController extends Controller
         }
 
         $user->update($data);
+
+        if($user ->role === 'supplier'){
+            \App\Models\Supplier::updateOrCreate(
+                ['user_id' => $user->id],
+                [
+                    'name' => $user->name,
+                    'email' => $user->email,
+                ]
+            );
+        }
 
         return redirect()->route('backend.admin.users.index')->with('success', 'User updated successfully.');
     }

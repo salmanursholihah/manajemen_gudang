@@ -18,7 +18,9 @@ use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\AdminResetPasswordController;
 use App\Http\Controllers\Operator\OperatorInboundController;
-use App\Http\Controllers\Operator\OperatorOutboundController;  
+use App\Http\Controllers\Operator\OperatorOutboundController; 
+use App\Http\Controllers\Report\ReportController;
+
 
 // Landing page (guest)
 Route::get('/', function () {
@@ -241,68 +243,23 @@ Route::prefix('viewer')->name('backend.viewer.')->middleware(['auth','role:Viewe
     Route::resource('/reports', App\Http\Controllers\Viewer\ViewerReportController::class)->only(['index','show']);
 });
 
+//================= REPORT ADMIN & MANAGER & OPERATOR & SUPPLIER ==================
+route::middleware(['auth','role:Admin,Manager,Operator,Supplier'])->group(function(){
+Route::get('/reports/transactions',[App\Http\Controllers\Report\ReportController::class,'index'])->name('reports.transactions');
+Route::get('/reports/transactions/export',[App\Http\Controllers\Report\ReportController::class,'export'])->name('reports.transactions.export');
+Route::get('/reports/transactions/export-pdf', [App\Http\Controllers\Report\ReportController::class, 'exportTransactionsPdf'])->name('reports.transactions.export.pdf');
 
-//  Route::prefix('viewer')->name('backend.viewer.')->middleware(['auth','role:viewer'])->group(function(){
-//         Route::resource('/reports', App\Http\Controllers\Viewer\ViewerReportController::class);
-//     });
-
-
-
-
-
+});
 
 
+//================= admin report data ==================//
 
+// Halaman pilih report
+Route::middleware(['auth', 'role:admin,manager,supplier,operator'])->group(function () {
+    
+    // Form pilih jenis report
+    Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
 
-
-
-
-
-// // manager Routes
-// Route::prefix('manager')->middleware(['auth', 'role:manager'])->group(function () {
-//     Route::view('/customers', 'backend.manager.customers.index')->name('manager.customers.index');
-//     Route::view('/products', 'backend.manager.products.index')->name('manager.products.index');
-//     Route::view('/reports', 'backend.manager.reports.index')->name('manager.reports.index');
-//     Route::view('/suppliers', 'backend.manager.suppliers.index')->name('manager.suppliers.index');
-//     Route::view('/transactions', 'backend.manager.transactions.index')->name('manager.transactions.index');
-//     Route::view('/users', 'backend.manager.users.index')->name('manager.users.index');
-// });
-
-// // sales Routes
-// Route::prefix('sales')->middleware(['auth', 'role:sales'])->group(function () {
-//     Route::view('/customers', 'backend.sales.customers.index')->name('sales.customers.index');
-//     Route::view('/products', 'backend.sales.products.index')->name('sales.products.index');
-//     Route::view('/reports', 'backend.sales.reports.index')->name('sales.reports.index');
-//     Route::view('/suppliers', 'backend.sales.suppliers.index')->name('sales.suppliers.index');
-//     Route::view('/transactions', 'backend.sales.transactions.index')->name('sales.transactions.index');
-//     Route::view('/users', 'backend.sales.users.index')->name('sales.users.index');
-// });
-
-// // operator Routes
-// Route::prefix('operator')->middleware(['auth', 'role:operator'])->group(function () {
-//     Route::view('/customers', 'backend.operator.customers.index')->name('operator.customers.index');
-//     Route::view('/products', 'backend.operator.products.index')->name('operator.products.index');
-//     Route::view('/reports', 'backend.operator.reports.index')->name('operator.reports.index');
-//     Route::view('/suppliers', 'backend.operator.suppliers.index')->name('operator.suppliers.index');
-//     Route::view('/transactions', 'backend.operator.transactions.index')->name('operator.transactions.index');
-//     Route::view('/users', 'backend.operator.users.index')->name('operator.users.index');
-// });
-
-// // viewer Routes
-// Route::prefix('viewer')->middleware(['auth', 'role:viewer'])->group(function () {
-//     Route::view('/customers', 'backend.viewer.customers.index')->name('viewer.customers.index');
-//     Route::view('/products', 'backend.viewer.products.index')->name('viewer.products.index');
-//     Route::view('/reports', 'backend.viewer.reports.index')->name('viewer.reports.index');
-//     Route::view('/suppliers', 'backend.viewer.suppliers.index')->name('viewer.suppliers.index');
-//     Route::view('/transactions', 'backend.viewer.transactions.index')->name('viewer.transactions.index');
-//     Route::view('/users', 'backend.viewer.users.index')->name('viewer.users.index');
-// });
-
-
-
-
-
-
-
-// Remove default auth scaffolding route
-// require __DIR__.'/auth.php';
+    // Proses export PDF
+    Route::post('/report/export', [ReportController::class, 'export'])->name('report.export');
+});

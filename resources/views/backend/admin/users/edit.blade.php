@@ -47,6 +47,7 @@
                 <option value="Admin" {{ old('role', $user->role)=='Admin' ? 'selected' : '' }}>Admin</option>
                 <option value="Manager" {{ old('role', $user->role)=='Manager' ? 'selected' : '' }}>Manager</option>
                 <option value="Operator" {{ old('role', $user->role)=='Operator' ? 'selected' : '' }}>Operator</option>
+                <option value="supplier" {{ old('role', $user->role)=='supplier' ? 'selected' : '' }}>supplier</option>
             </select>
         </div>
 
