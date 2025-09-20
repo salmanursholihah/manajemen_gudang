@@ -254,12 +254,17 @@ Route::get('/reports/transactions/export-pdf', [App\Http\Controllers\Report\Repo
 
 //================= admin report data ==================//
 
-// Halaman pilih report
-Route::middleware(['auth', 'role:admin,manager,supplier,operator'])->group(function () {
+// // Halaman pilih report
+// Route::middleware(['auth', 'role:admin,manager,supplier,operator'])->group(function () {
     
-    // Form pilih jenis report
-    Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
+//     // Form pilih jenis report
+//     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
 
-    // Proses export PDF
+//     // Proses export PDF
+//     Route::post('/report/export', [ReportController::class, 'export'])->name('report.export');
+// });
+
+Route::middleware(['auth', 'role:admin,manager,supplier,operator'])->group(function () {
+    Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
     Route::post('/report/export', [ReportController::class, 'export'])->name('report.export');
 });
