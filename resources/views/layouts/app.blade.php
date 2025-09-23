@@ -65,8 +65,10 @@
     <!-- Navbar (Mobile Header) -->
     <header class="bg-emerald-600 text-white flex items-center justify-between px-4 py-3 md:hidden">
         <div class="flex items-center space-x-2">
-<img src="{{ asset('storage/settings/default-logo.png') }}" alt="Logo"
-         class="h-10 w-10 rounded-full">
+   <img src="{{ asset('storage/' . setting('app_logo', 'settings/default-logo.png')) }}" 
+     alt="Logo"
+     class="h-10 w-10 rounded-full">
+
     <span class="font-bold">{{ setting('app_name', 'Manajemen Gudang') }}</span>
 </div>
 
