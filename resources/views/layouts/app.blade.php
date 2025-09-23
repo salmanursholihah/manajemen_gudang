@@ -11,55 +11,52 @@
     <script src="//unpkg.com/alpinejs" defer></script>
 
     <style>
-    @media (max-width: 640px) {
+        @media (max-width: 640px) {
+            /* Mobile Table Responsive */
+            table thead {
+                display: none;
+            }
 
-        /* Mobile Table Responsive */
-        table thead {
-            display: none;
-        }
+            table,
+            table tbody,
+            table tr,
+            table td {
+                display: block;
+                width: 100%;
+            }
 
-        table,
-        table tbody,
-        table tr,
-        table td {
-            display: block;
-            width: 100%;
-        }
+            table tr {
+                margin-bottom: 1rem;
+                border: 1px solid #e5e7eb; /* gray-200 */
+                border-radius: 0.5rem;
+                padding: 0.5rem;
+                background: #fff;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            }
 
-        table tr {
-            margin-bottom: 1rem;
-            border: 1px solid #e5e7eb;
-            /* gray-200 */
-            border-radius: 0.5rem;
-            padding: 0.5rem;
-            background: #fff;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-        }
+            table td {
+                text-align: right;
+                padding-left: 50%;
+                position: relative;
+                border: none !important;
+                border-bottom: 1px solid #f3f4f6;
+            }
 
-        table td {
-            text-align: right;
-            padding-left: 50%;
-            position: relative;
-            border: none !important;
-            border-bottom: 1px solid #f3f4f6;
-        }
+            table td:last-child {
+                border-bottom: none;
+            }
 
-        table td:last-child {
-            border-bottom: none;
+            table td::before {
+                content: attr(data-label);
+                position: absolute;
+                left: 0;
+                width: 50%;
+                padding-left: 0.75rem;
+                font-weight: 600;
+                text-align: left;
+                color: #374151; /* gray-700 */
+            }
         }
-
-        table td::before {
-            content: attr(data-label);
-            position: absolute;
-            left: 0;
-            width: 50%;
-            padding-left: 0.75rem;
-            font-weight: 600;
-            text-align: left;
-            color: #374151;
-            /* gray-700 */
-        }
-    }
     </style>
 </head>
 
@@ -68,15 +65,10 @@
     <!-- Navbar (Mobile Header) -->
     <header class="bg-emerald-600 text-white flex items-center justify-between px-4 py-3 md:hidden">
         <div class="flex items-center space-x-2">
-            @php
-            $logo = setting('app_logo'); // ambil dari DB
-            @endphp
-
-            <img src="{{ $logo ? asset('storage/' . $logo) : asset('images/default-logo.png') }}" alt="Logo"
-                class="h-10 w-10 rounded-full">
-
-            <span class="font-bold">{{ setting('app_name', 'Manajemen Gudang') }}</span>
-        </div>
+<img src="{{ asset('storage/settings/default-logo.png') }}" alt="Logo"
+         class="h-10 w-10 rounded-full">
+    <span class="font-bold">{{ setting('app_name', 'Manajemen Gudang') }}</span>
+</div>
 
         <button @click="sidebarOpen = !sidebarOpen">
             <i class="fas fa-bars text-2xl"></i>
@@ -86,8 +78,10 @@
     <!-- Wrapper Sidebar + Content -->
     <div class="flex flex-1">
         <!-- Sidebar -->
-        <aside class="fixed top-0 left-0 w-64 bg-emerald-600 text-white p-4 h-full transform transition-transform duration-300 z-50
-            md:translate-x-0" :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'">
+        <aside
+            class="fixed top-0 left-0 w-64 bg-emerald-600 text-white p-4 h-full transform transition-transform duration-300 z-50
+            md:translate-x-0"
+            :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'">
 
             <!-- Close button (mobile only) -->
             <div class="flex justify-end md:hidden">
@@ -111,41 +105,41 @@
 
                 @php
                 $menus = [
-                'admin' => [
-                ['icon'=>'fa-box', 'name'=>'Products', 'route'=>'backend.admin.products.index'],
-                ['icon'=>'fa-exchange-alt', 'name'=>'Transactions', 'route'=>'backend.admin.transactions.index'],
-                ['icon'=>'fa-truck', 'name'=>'Suppliers', 'route'=>'backend.admin.suppliers.index'],
-                ['icon'=>'fa-users', 'name'=>'Customers', 'route'=>'backend.admin.customers.index'],
-                ['icon'=>'fa-chart-bar', 'name'=>'Reports', 'route'=>'reports.index'],
-                ['icon'=>'fa-user-cog', 'name'=>'User Management', 'route'=>'backend.admin.users.index'],
-                ['icon'=>'fa-cog', 'name'=>'Setting', 'route'=>'backend.admin.settings.index'],
-                ['icon'=>'fa-cog', 'name'=>'setting Landing', 'route'=>'backend.admin.landings.index'],
-                ['icon'=>'fa-address-card', 'name'=>'Profile', 'route'=>'profile.edit'],
-                ],
-                'manager' => [
-                ['icon'=>'fa-box', 'name'=>'Products', 'route'=>'backend.manager.products.index'],
-                ['icon'=>'fa-exchange-alt', 'name'=>'Transactions', 'route'=>'backend.manager.transactions.index'],
-                ['icon'=>'fa-truck', 'name'=>'Suppliers', 'route'=>'backend.manager.suppliers.index'],
-                ['icon'=>'fa-users', 'name'=>'Customers', 'route'=>'backend.manager.customers.index'],
-                ['icon'=>'fa-chart-bar', 'name'=>'Reports', 'route'=>'reports.index'],
-                ['icon'=>'fa-address-card', 'name'=>'Profile', 'route'=>'profile.edit'],
-                ],
-                'supplier' => [
-                ['icon'=>'fa-box', 'name'=>'Products', 'route'=>'backend.supplier.products.index'],
-                ['icon'=>'fa-exchange-alt', 'name'=>'Transactions', 'route'=>'backend.supplier.transactions.index'],
-                ['icon'=>'fa-address-card', 'name'=>'Profile', 'route'=>'profile.edit'],
-                ['icon'=>'fa-chart-bar', 'name'=>'Reports', 'route'=>'reports.index'],
-                ],
-                'operator' => [
-                ['icon'=>'fa-box', 'name'=>'Products', 'route'=>'backend.operator.products.index'],
-                ['icon'=>'fa-exchange-alt', 'name'=>'Transactions', 'route'=>'backend.operator.transactions.index'],
-                ['icon'=>'fa-address-card', 'name'=>'Profile', 'route'=>'profile.edit'],
-                ['icon'=>'fa-chart-bar', 'name'=>'Reports', 'route'=>'reports.index'],
-                ],
-                'viewer' => [
-                ['icon'=>'fa-chart-bar', 'name'=>'Reports', 'route'=>'backend.viewer.reports.index'],
-                ['icon'=>'fa-address-card', 'name'=>'Profile', 'route'=>'profile.edit'],
-                ],
+                    'admin' => [
+                        ['icon'=>'fa-box', 'name'=>'Products', 'route'=>'backend.admin.products.index'],
+                        ['icon'=>'fa-exchange-alt', 'name'=>'Transactions', 'route'=>'backend.admin.transactions.index'],
+                        ['icon'=>'fa-truck', 'name'=>'Suppliers', 'route'=>'backend.admin.suppliers.index'],
+                        ['icon'=>'fa-users', 'name'=>'Customers', 'route'=>'backend.admin.customers.index'],
+                        ['icon'=>'fa-chart-bar', 'name'=>'Reports', 'route'=>'reports.index'],
+                        ['icon'=>'fa-user-cog', 'name'=>'User Management', 'route'=>'backend.admin.users.index'],
+                        ['icon'=>'fa-cog', 'name'=>'Setting', 'route'=>'backend.admin.settings.index'], 
+                        ['icon'=>'fa-cog', 'name'=>'setting Landing', 'route'=>'backend.admin.landings.index'],
+                        ['icon'=>'fa-address-card', 'name'=>'Profile', 'route'=>'profile.edit'],
+                    ],
+                    'manager' => [
+                        ['icon'=>'fa-box', 'name'=>'Products', 'route'=>'backend.manager.products.index'],
+                        ['icon'=>'fa-exchange-alt', 'name'=>'Transactions', 'route'=>'backend.manager.transactions.index'],
+                        ['icon'=>'fa-truck', 'name'=>'Suppliers', 'route'=>'backend.manager.suppliers.index'],
+                        ['icon'=>'fa-users', 'name'=>'Customers', 'route'=>'backend.manager.customers.index'],
+                        ['icon'=>'fa-chart-bar', 'name'=>'Reports', 'route'=>'reports.index'],
+                        ['icon'=>'fa-address-card', 'name'=>'Profile', 'route'=>'profile.edit'],
+                    ],
+                    'supplier' => [
+                        ['icon'=>'fa-box', 'name'=>'Products', 'route'=>'backend.supplier.products.index'],
+                        ['icon'=>'fa-exchange-alt', 'name'=>'Transactions', 'route'=>'backend.supplier.transactions.index'],
+                        ['icon'=>'fa-address-card', 'name'=>'Profile', 'route'=>'profile.edit'],
+                        ['icon'=>'fa-chart-bar', 'name'=>'Reports', 'route'=>'reports.index'],
+                    ],
+                    'operator' => [
+                        ['icon'=>'fa-box', 'name'=>'Products', 'route'=>'backend.operator.products.index'],
+                        ['icon'=>'fa-exchange-alt', 'name'=>'Transactions', 'route'=>'backend.operator.transactions.index'],
+                        ['icon'=>'fa-address-card', 'name'=>'Profile', 'route'=>'profile.edit'],
+                        ['icon'=>'fa-chart-bar', 'name'=>'Reports', 'route'=>'reports.index'],
+                    ],
+                    'viewer' => [
+                        ['icon'=>'fa-chart-bar', 'name'=>'Reports', 'route'=>'backend.viewer.reports.index'],
+                        ['icon'=>'fa-address-card', 'name'=>'Profile', 'route'=>'profile.edit'],
+                    ],
                 ];
                 $role = strtolower(Auth::user()->role ?? '');
                 @endphp
